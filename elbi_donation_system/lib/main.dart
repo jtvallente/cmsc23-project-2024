@@ -6,6 +6,8 @@ import 'providers/FirebaseAuthUserProvider.dart';
 import 'providers/FirebaseUserProvider.dart';
 import 'providers/FirebaseDonationDrivesProvider.dart';
 import 'providers/FirebaseDonationsProvider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'pages/SignIn.dart';
 import 'pages/SignUp.dart';
@@ -33,7 +35,12 @@ import 'pages/Donor/DonorDonationDetails.dart';
 import 'pages/Donor/DonorProfile.dart';
 import 'pages/Donor/MakeDonation.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
     MultiProvider(
       providers: [
