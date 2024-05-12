@@ -57,9 +57,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       // routes
       routes: {
-        '/': (context) => Welcome(),
-        '/signin': (context) => SignIn(),
-        '/signup': (context) => SignUp(),
+        '/': (context) => WelcomePage(),
+        '/signin': (context) => SigninPage(),
+        '/signup': (context) => SignupPage(),
 
         // Admin routes
         '/admin_dashboard': (context) => AdminDashboard(),
@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
         '/admin_org_details': (context) => AdminOrgDetails(),
         '/approve_org': (context) => ApproveOrg(),
         '/donors_list': (context) => DonorsList(),
+
         // Organization routes
         '/organization_dashboard': (context) => OrganizationDashboard(),
         '/donation_drive_details': (context) => DonationDriveDetails(),
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
         '/organization_donation_details': (context) =>
             OrganizationDonationDetails(),
         '/organization_profile': (context) => OrganizationProfile(),
+
         // Donor routes
         '/donor_dashboard': (context) => DonorDashboard(),
         '/donor_donation_details': (context) => DonorDonationDetails(),
