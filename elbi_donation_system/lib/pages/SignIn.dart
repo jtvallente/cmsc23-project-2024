@@ -1,3 +1,4 @@
+import 'package:elbi_donation_system/components/FormBanner.dart';
 import 'package:flutter/material.dart';
 
 class SigninPage extends StatefulWidget {
@@ -11,6 +12,8 @@ class _SigninPageState extends State<SigninPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: FormBanner(title: "Sign-in", subtitle: "USER", widget: Container(height: 400)),
+    );
   }
 }
