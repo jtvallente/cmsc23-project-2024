@@ -46,11 +46,9 @@ class _FormTextFieldState extends State<FormTextField> {
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(widget.label),
-          SizedBox(height:5),
+          SizedBox(height: 5),
           TextFormField(
             readOnly: widget.readOnly!,
             keyboardType: widget.inputType,
