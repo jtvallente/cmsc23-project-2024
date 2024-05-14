@@ -51,6 +51,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FormBanner(
+          actions: [],
           gradient: ProjectColors().bluePrimaryGradient,
           color: ProjectColors().bluePrimary,
           title: "Sign-up",
@@ -106,7 +107,6 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                               inputType: TextInputType.text),
                           FormFileUpload(
                               label: "Proof of Legitimacy", onTap: () {}),
-
                           FormSwitch(
                               label: "Are you open for donations?",
                               controller: _isOpenforDonations),

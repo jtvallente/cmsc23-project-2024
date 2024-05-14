@@ -18,6 +18,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FormBanner(
+        actions: [],
         gradient: ProjectColors().purplePrimaryGradient,
         color: ProjectColors().purplePrimary,
         title: "Sign-in",

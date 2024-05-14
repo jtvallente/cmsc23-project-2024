@@ -7,12 +7,14 @@ class FormBanner extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final String subtitle;
   final Widget widget;
+  final List<Widget> actions;
   const FormBanner(
       {required this.color,
       required this.gradient,
       required this.title,
       required this.subtitle,
       required this.widget,
+      required this.actions,
       super.key});
 
   @override
@@ -30,6 +32,7 @@ class _FormBannerState extends State<FormBanner> {
         SliverAppBar.large(
             stretch: false,
             expandedHeight: 250,
+            actions: widget.actions,
             elevation: 4,
             backgroundColor: widget.color,
             title: Text(
@@ -55,19 +58,22 @@ class _FormBannerState extends State<FormBanner> {
                                 letterSpacing: 5),
                             widget.subtitle.toUpperCase())),
                     Flexible(
-                        child: Text(
-                            style: const TextStyle(
-                              fontSize: 64,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                              shadows: [
-                                Shadow(
-                                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                                    offset: Offset(0, 4),
-                                    blurRadius: 15)
-                              ],
-                            ),
-                            widget.title)),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                              style: const TextStyle(
+                                fontSize: 64,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                                      offset: Offset(0, 4),
+                                      blurRadius: 15)
+                                ],
+                              ),
+                              widget.title),
+                        )),
                   ],
                 ),
               ),
