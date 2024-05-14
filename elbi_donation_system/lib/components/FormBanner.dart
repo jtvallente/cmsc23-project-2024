@@ -1,11 +1,16 @@
+import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 
 class FormBanner extends StatefulWidget implements PreferredSizeWidget {
+  final LinearGradient gradient;
+  final Color color;
   final String title;
   final String subtitle;
   final Widget widget;
   const FormBanner(
-      {required this.title,
+      {required this.color,
+        required this.gradient,
+      required this.title,
       required this.subtitle,
       required this.widget,
       super.key});
@@ -25,7 +30,7 @@ class _FormBannerState extends State<FormBanner> {
         SliverAppBar.large(
             stretch: false,
             expandedHeight: 250,
-            backgroundColor: const Color(0xFF288242),
+            backgroundColor: widget.color,
             title: Text(
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
@@ -33,12 +38,8 @@ class _FormBannerState extends State<FormBanner> {
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment(0.00, -1.00),
-                    end: Alignment(0, 1),
-                    colors: [Color(0xFF6FCC8A), Color(0xFF288242)],
-                  ),
+                decoration: BoxDecoration(
+                  gradient: widget.gradient,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,

@@ -3,23 +3,20 @@ import 'package:flutter/material.dart';
 class PrimaryButton extends StatefulWidget {
   final Function() onTap;
   final String label;
-  const PrimaryButton({required this.label, required this.onTap, super.key});
+  final LinearGradient gradient;
+  const PrimaryButton({required this.label, required this.onTap, required this.gradient, super.key});
 
   @override
-  State<PrimaryButton> createState() => _SlambookButtonState();
+  State<PrimaryButton> createState() => _PrimaryButtonState();
 }
 
-class _SlambookButtonState extends State<PrimaryButton> {
+class _PrimaryButtonState extends State<PrimaryButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
         height: 65,
         decoration: ShapeDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment(0.00, -1.00),
-            end: Alignment(0, 1),
-            colors: [Color(0xFF6FCC8A), Color(0xFF288242)],
-          ),
+          gradient: widget.gradient,
           shape: RoundedRectangleBorder(
             side: const BorderSide(width: 5, color: Colors.white),
             borderRadius: BorderRadius.circular(15),
@@ -78,7 +75,7 @@ class _SlambookButtonState extends State<PrimaryButton> {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w800,
-              fontSize: 16,
+              fontSize: 20,
             ),
             widget.label),
         ));

@@ -1,6 +1,7 @@
 import 'package:elbi_donation_system/components/FormBanner.dart';
 import 'package:elbi_donation_system/components/FormTextField.dart';
 import 'package:elbi_donation_system/components/PrimaryButton.dart';
+import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 
 class UserSignInPage extends StatefulWidget {
@@ -9,7 +10,7 @@ class UserSignInPage extends StatefulWidget {
 }
 
 class _UserSignInPageState extends State<UserSignInPage> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -17,6 +18,8 @@ class _UserSignInPageState extends State<UserSignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FormBanner(
+        gradient: ProjectColors().greenPrimaryGradient,
+        color: ProjectColors().greenPrimary,
         title: "Sign-in",
         subtitle: "User",
         widget: SingleChildScrollView(
@@ -40,7 +43,7 @@ class _UserSignInPageState extends State<UserSignInPage> {
                             isNum: false,
                             isPassword: false,
                             label: "Username",
-                            controller: _emailController,
+                            controller: _usernameController,
                             inputType: TextInputType.emailAddress),
                         FormTextField(
                             isNum: false,
@@ -56,16 +59,16 @@ class _UserSignInPageState extends State<UserSignInPage> {
                           TextButton(
                               onPressed: () => Navigator.pushReplacementNamed(
                                   context, '/user_signup'),
-                              child: const Text(
-                                  style: TextStyle(color: Color(0xFF288242)),
+                              child: Text(
+                                  style: TextStyle(color: ProjectColors().greenPrimary),
                                   "No account yet? Sign-up here.")),
                           TextButton(
-                              onPressed: () => Navigator.pushReplacementNamed(
+                              onPressed: () => Navigator.pushNamed(
                                   context, '/admin_signin'),
-                              child: const Text(
-                                  style: TextStyle(color: Color(0xFF288242)),
+                              child: Text(
+                                  style: TextStyle(color: ProjectColors().greenPrimary),
                                   "Or if you're an admin, Sign-in here.")),
-                          PrimaryButton(label: "Sign-in", onTap: () {})
+                          PrimaryButton(label: "Sign-in", gradient: ProjectColors().greenPrimaryGradient, onTap: () {})
                         ])
                   ]),
             ),

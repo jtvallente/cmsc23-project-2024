@@ -1,6 +1,7 @@
 import 'package:elbi_donation_system/components/FormBanner.dart';
 import 'package:elbi_donation_system/components/FormTextField.dart';
 import 'package:elbi_donation_system/components/PrimaryButton.dart';
+import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 
 class AdminSignInPage extends StatefulWidget {
@@ -17,6 +18,8 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FormBanner(
+        gradient: ProjectColors().purplePrimaryGradient,
+        color: ProjectColors().purplePrimary,
         title: "Sign-in",
         subtitle: "Admin",
         widget: SingleChildScrollView(
@@ -53,7 +56,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          PrimaryButton(label: "Sign-in", onTap: () {})
+                          PrimaryButton(label: "Sign-in", gradient: ProjectColors().greenPrimaryGradient, onTap: () {})
                         ])
                   ]),
             ),
