@@ -26,6 +26,7 @@ class _FormTextFieldState extends State<FormTextField> {
   //called when object is initialized
   @override
   void initState() {
+    super.initState();
     widget.controller.addListener(() {
       setState(() {
         _textValue =
@@ -45,21 +46,28 @@ class _FormTextFieldState extends State<FormTextField> {
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.all(10),
-        child: TextFormField(
-          readOnly: widget.readOnly!,
-          keyboardType: widget.inputType,
-          obscureText: widget.isPassword,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Text(widget.label),
+          SizedBox(height:5),
+          TextFormField(
+            readOnly: widget.readOnly!,
+            keyboardType: widget.inputType,
+            obscureText: widget.isPassword,
+            validator: (val) {
+              if (val!.isEmpty) return "Please enter an input!";
 
-          validator: (val) {
-            if (val!.isEmpty) return "Please enter an input!";
-
-            if (widget.isNum && num.tryParse(val) == null) {
-              return "Invalid input!";
-            }
-          },
-          controller: widget.controller,
-          decoration: InputDecoration(
-              border: const OutlineInputBorder()),
-        ));
+              if (widget.isNum && num.tryParse(val) == null) {
+                return "Invalid input!";
+              }
+              return null;
+            },
+            controller: widget.controller,
+            decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+          ),
+        ]));
   }
 }

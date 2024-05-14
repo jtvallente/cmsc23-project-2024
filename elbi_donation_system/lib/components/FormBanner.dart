@@ -14,7 +14,7 @@ class FormBanner extends StatefulWidget implements PreferredSizeWidget {
   State<FormBanner> createState() => _FormBannerState();
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _FormBannerState extends State<FormBanner> {
@@ -25,10 +25,10 @@ class _FormBannerState extends State<FormBanner> {
         SliverAppBar.large(
             stretch: false,
             expandedHeight: 250,
-            backgroundColor: Color(0xFF288242),
+            backgroundColor: const Color(0xFF288242),
             title: Text(
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
                 "${widget.subtitle} ${widget.title}"),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
@@ -49,7 +49,7 @@ class _FormBannerState extends State<FormBanner> {
                             style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w800,
-                                color: Colors.white,
+                                color: Color.fromARGB(180, 255, 255, 255),
                                 letterSpacing: 5),
                             widget.subtitle.toUpperCase())),
                     Flexible(
@@ -58,6 +58,12 @@ class _FormBannerState extends State<FormBanner> {
                               fontSize: 64,
                               fontWeight: FontWeight.w900,
                               color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.25),
+                                    offset: Offset(0, 4),
+                                    blurRadius: 15)
+                              ],
                             ),
                             widget.title)),
                   ],
@@ -68,10 +74,5 @@ class _FormBannerState extends State<FormBanner> {
         SliverToBoxAdapter(child: widget.widget)
       ],
     );
-
-    // AppBar(
-
-    //     bottom: PreferredSize(
-    //         preferredSize: Size.fromHeight(200), child: SizedBox(height: 200)));
   }
 }
