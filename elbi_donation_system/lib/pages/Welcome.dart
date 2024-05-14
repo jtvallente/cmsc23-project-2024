@@ -12,7 +12,7 @@ class _WelcomePageState extends State<WelcomePage> {
     super.initState();
     // Set up a timer to navigate to signin page after 3 seconds
     Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/signin');
+      Navigator.pushReplacementNamed(context, '/user_signin');
     });
   }
 

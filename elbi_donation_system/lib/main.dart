@@ -1,3 +1,4 @@
+import 'package:elbi_donation_system/pages/admin_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/FirebaseAdminProvider.dart';
@@ -9,8 +10,8 @@ import 'providers/FirebaseDonationsProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-import 'pages/SignIn.dart';
-import 'pages/SignUp.dart';
+import 'pages/user_sign_in.dart';
+import 'pages/user_sign_up.dart';
 import 'pages/Welcome.dart';
 
 //ADMIN PAGES IMPORT
@@ -65,8 +66,9 @@ class MyApp extends StatelessWidget {
       // routes
       routes: {
         '/': (context) => WelcomePage(),
-        '/signin': (context) => SigninPage(),
-        '/signup': (context) => SignupPage(),
+        '/admin_signin': (context) => AdminSignInPage(),
+        '/user_signin': (context) => UserSignInPage(),
+        '/user_signup': (context) => UserSignUpPage(),
 
         // Admin routes
         '/admin_dashboard': (context) => AdminDashboard(),
