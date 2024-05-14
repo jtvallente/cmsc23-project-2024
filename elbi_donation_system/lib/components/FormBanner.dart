@@ -9,7 +9,7 @@ class FormBanner extends StatefulWidget implements PreferredSizeWidget {
   final Widget widget;
   const FormBanner(
       {required this.color,
-        required this.gradient,
+      required this.gradient,
       required this.title,
       required this.subtitle,
       required this.widget,
@@ -30,6 +30,7 @@ class _FormBannerState extends State<FormBanner> {
         SliverAppBar.large(
             stretch: false,
             expandedHeight: 250,
+            elevation: 4,
             backgroundColor: widget.color,
             title: Text(
                 style: const TextStyle(

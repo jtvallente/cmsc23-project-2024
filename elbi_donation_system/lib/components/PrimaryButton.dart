@@ -65,26 +65,19 @@ class _PrimaryButtonState extends State<PrimaryButton> {
           style: ElevatedButton.styleFrom(
             minimumSize:
                 const Size(double.infinity, 50), // Set minimum width and height
-
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           ),
           child: Text(
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w800,
               fontSize: 20,
             ),
             widget.label),
         ));
-    // ElevatedButton(
-    //     style: ElevatedButton.styleFrom(
-    //       minimumSize:
-    //           Size(double.infinity, 50), // Set minimum width and height
-    //     ),
-    //     onPressed: widget.onTap,
-    //     child: Text(widget.label));
+
   }
 }
