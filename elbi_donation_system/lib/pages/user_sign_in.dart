@@ -69,7 +69,7 @@ class _UserSignInPageState extends State<UserSignInPage> {
                               child: Text(
                                   style: TextStyle(color: ProjectColors().greenPrimary),
                                   "Or if you're an admin, Sign-in here.")),
-                          PrimaryButton(label: "Sign-in", gradient: ProjectColors().greenPrimaryGradient, onTap: () {})
+                          PrimaryButton(label: "Sign-in", gradient: ProjectColors().greenPrimaryGradient, onTap: () {}, fillWidth: true,)
                         ])
                   ]),
             ),

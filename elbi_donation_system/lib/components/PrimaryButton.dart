@@ -4,7 +4,15 @@ class PrimaryButton extends StatefulWidget {
   final Function() onTap;
   final String label;
   final LinearGradient gradient;
-  const PrimaryButton({required this.label, required this.onTap, required this.gradient, super.key});
+  final bool fillWidth;
+  final IconData? icon;
+  const PrimaryButton(
+      {required this.label,
+      required this.onTap,
+      required this.gradient,
+      required this.fillWidth,
+      this.icon,
+      super.key});
 
   @override
   State<PrimaryButton> createState() => _PrimaryButtonState();
@@ -63,21 +71,30 @@ class _PrimaryButtonState extends State<PrimaryButton> {
         child: ElevatedButton(
           onPressed: widget.onTap,
           style: ElevatedButton.styleFrom(
-            minimumSize:
-                const Size(double.infinity, 50), // Set minimum width and height
+            minimumSize: widget.fillWidth
+                ? const Size(double.infinity, 50)
+                : null, // Set minimum width and height
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           ),
-          child: Text(
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w800,
-              fontSize: 20,
-            ),
-            widget.label),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 16,
+                  ),
+                  widget.label),
+              widget.icon == null ? Container() : const SizedBox(width: 10),
+              widget.icon == null
+                  ? Container()
+                  : Icon(widget.icon, color: Colors.white, size: 25),
+            ],
+          ),
         ));
-
   }
 }

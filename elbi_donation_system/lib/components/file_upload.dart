@@ -20,15 +20,13 @@ class _FormFileUploadState extends State<FormFileUpload> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(widget.label),
-          ElevatedButton(
-              onPressed: () {},
-              child: const Row(children: [
-                Icon(Icons.upload_file),
-                SizedBox(
-                  width: 10,
-                ),
-                Text("Upload Files")
-              ]))
+          PrimaryButton(
+            icon: Icons.file_upload,
+            label: "Upload File",
+            gradient: ProjectColors().purplePrimaryGradient,
+            onTap: () {},
+            fillWidth: false,
+          ),
         ],
       ),
     );

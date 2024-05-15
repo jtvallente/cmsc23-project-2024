@@ -128,7 +128,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                       PrimaryButton(
                           label: "Sign-up",
                           gradient: ProjectColors().bluePrimaryGradient,
-                          onTap: () {})
+                          onTap: () {}, fillWidth: true,)
                     ]),
               ),
             ),

@@ -57,7 +57,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          PrimaryButton(label: "Sign-in", gradient: ProjectColors().greenPrimaryGradient, onTap: () {})
+                          PrimaryButton(label: "Sign-in", gradient: ProjectColors().greenPrimaryGradient, onTap: () {}, fillWidth: true,)
                         ])
                   ]),
             ),

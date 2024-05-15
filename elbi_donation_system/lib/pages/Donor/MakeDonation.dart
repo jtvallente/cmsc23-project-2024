@@ -107,7 +107,7 @@ class _MakeDonationState extends State<MakeDonation> {
                       PrimaryButton(
                           label: "Make Donation",
                           gradient: ProjectColors().greenPrimaryGradient,
-                          onTap: () {})
+                          onTap: () {}, fillWidth: true,)
                     ]),
               ),
             ),
