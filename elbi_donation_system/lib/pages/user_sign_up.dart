@@ -128,7 +128,9 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                       PrimaryButton(
                           label: "Sign-up",
                           gradient: ProjectColors().bluePrimaryGradient,
-                          onTap: () {}, fillWidth: true,)
+                          onTap: () {
+                            Navigator.pushNamed(context, '/donor_dashboard');
+                          }, fillWidth: true,)
                     ]),
               ),
             ),

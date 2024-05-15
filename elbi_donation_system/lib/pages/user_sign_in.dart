@@ -18,6 +18,7 @@ class _UserSignInPageState extends State<UserSignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FormBanner(
+        isRoot: true,
         actions: [],
         gradient: ProjectColors().greenPrimaryGradient,
         color: ProjectColors().greenPrimary,
@@ -32,7 +33,7 @@ class _UserSignInPageState extends State<UserSignInPage> {
                 (MediaQuery.of(context).viewInsets.bottom == 0
                     ? 0
                     : MediaQuery.of(context).viewInsets.bottom -
-                        MediaQuery.of(context).size.height / 4),
+                        MediaQuery.of(context).size.height / 3.5),
             child: Padding(
               padding: const EdgeInsets.all(25.0),
               child: Column(
@@ -58,7 +59,7 @@ class _UserSignInPageState extends State<UserSignInPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextButton(
-                              onPressed: () => Navigator.pushReplacementNamed(
+                              onPressed: () => Navigator.pushNamed(
                                   context, '/user_signup'),
                               child: Text(
                                   style: TextStyle(color: ProjectColors().greenPrimary),
@@ -69,7 +70,8 @@ class _UserSignInPageState extends State<UserSignInPage> {
                               child: Text(
                                   style: TextStyle(color: ProjectColors().greenPrimary),
                                   "Or if you're an admin, Sign-in here.")),
-                          PrimaryButton(label: "Sign-in", gradient: ProjectColors().greenPrimaryGradient, onTap: () {}, fillWidth: true,)
+                                  const SizedBox(height: 10),
+                          PrimaryButton(label: "Sign-in", gradient: ProjectColors().greenPrimaryGradient, onTap: () {Navigator.pushNamed(context, '/donor_dashboard');}, fillWidth: true,)
                         ])
                   ]),
             ),

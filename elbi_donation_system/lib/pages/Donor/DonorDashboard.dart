@@ -12,20 +12,20 @@ class _DonorDashboardState extends State<DonorDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        
-        backgroundColor: ProjectColors().greenPrimary,
-        child: const Icon(Icons.add, color: Colors.white, weight: 10),
-        onPressed:   ()=>Navigator.pushNamed(context, '/make_donation')),
+          backgroundColor: ProjectColors().greenPrimary,
+          child: const Icon(Icons.add, color: Colors.white, weight: 10),
+          onPressed: () => Navigator.pushNamed(context, '/make_donation')),
       body: FormBanner(
         actions: [
           IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.person,
                 color: Colors.white,
               )),
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.menu, color: Colors.white))
+              onPressed: () {},
+              icon: const Icon(Icons.menu, color: Colors.white))
         ],
         gradient: ProjectColors().greenPrimaryGradient,
         color: ProjectColors().greenPrimary,

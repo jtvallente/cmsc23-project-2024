@@ -1,4 +1,5 @@
 import 'package:elbi_donation_system/pages/admin_sign_in.dart';
+import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/FirebaseAdminProvider.dart';
@@ -61,6 +62,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: ProjectColors().greenPrimary)),
       // initial route
       initialRoute: '/',
       // routes

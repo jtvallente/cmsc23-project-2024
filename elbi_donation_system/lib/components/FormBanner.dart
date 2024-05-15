@@ -8,8 +8,10 @@ class FormBanner extends StatefulWidget implements PreferredSizeWidget {
   final String subtitle;
   final Widget widget;
   final List<Widget> actions;
+  final bool isRoot;
   const FormBanner(
-      {required this.color,
+      {this.isRoot = false,
+      required this.color,
       required this.gradient,
       required this.title,
       required this.subtitle,
@@ -30,6 +32,14 @@ class _FormBannerState extends State<FormBanner> {
     return CustomScrollView(
       slivers: [
         SliverAppBar.large(
+            leading: widget.isRoot
+                ? null
+                : IconButton(
+                    icon: Icon(Icons.arrow_back_rounded,
+                    
+                        color: Colors.white),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
             stretch: false,
             expandedHeight: 250,
             actions: widget.actions,
@@ -38,7 +48,7 @@ class _FormBannerState extends State<FormBanner> {
             title: Text(
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
-                "${widget.subtitle} ${widget.title}"),
+                "${widget.title}"),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 padding: const EdgeInsets.all(20),
@@ -59,21 +69,21 @@ class _FormBannerState extends State<FormBanner> {
                             widget.subtitle.toUpperCase())),
                     Flexible(
                         child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Text(
-                              style: const TextStyle(
-                                fontSize: 64,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 15)
-                                ],
-                              ),
-                              widget.title),
-                        )),
+                      fit: BoxFit.contain,
+                      child: Text(
+                          style: const TextStyle(
+                            fontSize: 64,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                  offset: Offset(0, 4),
+                                  blurRadius: 15)
+                            ],
+                          ),
+                          widget.title),
+                    )),
                   ],
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:elbi_donation_system/components/FormTextField.dart';
 import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/components/controllers.dart';
 import 'package:elbi_donation_system/components/file_upload.dart';
+import 'package:elbi_donation_system/components/form_segmented_button.dart';
 import 'package:elbi_donation_system/components/form_switch.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
@@ -51,12 +52,15 @@ class _MakeDonationState extends State<MakeDonation> {
                               label: "Name",
                               controller: _name,
                               inputType: TextInputType.name),
+                              FormSegmentedButton(
+                                label: "Delivery Method",
+                                options: ["Pickup", "Drop-off"]),
                           FormTextField(
-                              isNum: false,
+                              isNum: true,
                               isPassword: false,
-                              label: "Username",
+                              label: "Weight",
                               controller: _username,
-                              inputType: TextInputType.text),
+                              inputType: TextInputType.number),
                           FormTextField(
                               isNum: false,
                               isPassword: true,
