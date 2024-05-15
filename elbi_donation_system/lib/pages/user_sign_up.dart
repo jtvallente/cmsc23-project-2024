@@ -2,7 +2,7 @@ import 'package:elbi_donation_system/components/FormBanner.dart';
 import 'package:elbi_donation_system/components/FormTextField.dart';
 import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/components/controllers.dart';
-import 'package:elbi_donation_system/components/file_upload.dart';
+import 'package:elbi_donation_system/components/form_row_button.dart';
 import 'package:elbi_donation_system/components/form_switch.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +105,9 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                               label: "Description",
                               controller: _description,
                               inputType: TextInputType.text),
-                          FormFileUpload(
+                          FormRowButton(
+                              icon: Icons.upload,
+                              buttonLabel: "Upload File",
                               label: "Proof of Legitimacy", onTap: () {}),
                           FormSwitch(
                               label: "Are you open for donations?",

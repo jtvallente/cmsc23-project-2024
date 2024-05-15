@@ -2,7 +2,7 @@ import 'package:elbi_donation_system/components/FormBanner.dart';
 import 'package:elbi_donation_system/components/FormTextField.dart';
 import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/components/controllers.dart';
-import 'package:elbi_donation_system/components/file_upload.dart';
+import 'package:elbi_donation_system/components/form_row_button.dart';
 import 'package:elbi_donation_system/components/form_segmented_button.dart';
 import 'package:elbi_donation_system/components/form_switch.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
@@ -14,7 +14,7 @@ class MakeDonation extends StatefulWidget {
 }
 
 class _MakeDonationState extends State<MakeDonation> {
-  final TextEditingController _name = TextEditingController();
+  final TextEditingController _category = TextEditingController();
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _address = TextEditingController();
@@ -49,50 +49,42 @@ class _MakeDonationState extends State<MakeDonation> {
                           FormTextField(
                               isNum: false,
                               isPassword: false,
-                              label: "Name",
-                              controller: _name,
+                              label: "Category",
+                              controller: _category,
                               inputType: TextInputType.name),
-                              FormSegmentedButton(
-                                label: "Delivery Method",
-                                options: ["Pickup", "Drop-off"]),
+                          FormSegmentedButton(
+                              label: "Delivery Method",
+                              options: ["Pickup", "Drop-off"]),
                           FormTextField(
                               isNum: true,
                               isPassword: false,
                               label: "Weight",
                               controller: _username,
                               inputType: TextInputType.number),
-                          FormTextField(
-                              isNum: false,
-                              isPassword: true,
-                              label: "Password",
-                              controller: _password,
-                              inputType: TextInputType.text),
+                          FormRowButton(
+                            label: "Add Photo`",
+                            onTap: () {},
+                            buttonLabel: "Open Camera",
+                            icon: Icons.camera_alt_rounded,
+                          ),
                           FormTextField(
                               isNum: false,
                               isPassword: false,
                               label: "Address",
                               controller: _address,
                               inputType: TextInputType.text),
+                          FormRowButton(
+                            label: "Choose date and time`",
+                            onTap: () {},
+                            buttonLabel: "Open Calendar",
+                            icon: Icons.calendar_month,
+                          ),
                           FormTextField(
                               isNum: false,
                               isPassword: false,
                               label: "Contact Number",
                               controller: _contactNumber,
                               inputType: TextInputType.phone),
-                          FormSwitch(
-                              label: "Are you an organization?",
-                              controller: _isOrganization),
-                          FormTextField(
-                              isNum: false,
-                              isPassword: false,
-                              label: "Description",
-                              controller: _description,
-                              inputType: TextInputType.text),
-                          FormFileUpload(
-                              label: "Proof of Legitimacy", onTap: () {}),
-                          FormSwitch(
-                              label: "Are you open for donations?",
-                              controller: _isOpenforDonations),
                           // _isOrganization.isSwitchOn
                           //     ?
                           // Column(children: [
@@ -109,9 +101,11 @@ class _MakeDonationState extends State<MakeDonation> {
                       ),
                       const SizedBox(height: 50),
                       PrimaryButton(
-                          label: "Make Donation",
-                          gradient: ProjectColors().greenPrimaryGradient,
-                          onTap: () {}, fillWidth: true,)
+                        label: "Make Donation",
+                        gradient: ProjectColors().greenPrimaryGradient,
+                        onTap: () {},
+                        fillWidth: true,
+                      )
                     ]),
               ),
             ),
