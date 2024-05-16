@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:elbi_donation_system/models/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:elbi_donation_system/models/User.dart';
 
 class FirebaseAuthUserProvider with ChangeNotifier {
   // Firebase authentication user functionality here

@@ -4,9 +4,14 @@ import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/components/controllers.dart';
 import 'package:elbi_donation_system/components/form_row_button.dart';
 import 'package:elbi_donation_system/components/form_switch.dart';
+import 'package:elbi_donation_system/models/User.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
+import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
+import 'package:random_string/random_string.dart';
+import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 
 class UserSignUpPage extends StatefulWidget {
   @override
@@ -85,6 +90,9 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider = context.watch<FirebaseUserProvider>();
+    final UserAuth = context.watch<FirebaseAuthUserProvider>();
+
     return Scaffold(
       body: FormBanner(
         actions: [],
@@ -171,8 +179,13 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                           icon: Icons.upload,
                           buttonLabel: "Upload File",
                           label: "Proof of Legitimacy",
-                          onTap: () {},
+                          onTap: () async {
+                            await UserProvider.pickFile();
+                            //await UserProvider.uploadFile();
+                          },
                         ),
+                        if (UserProvider.selectedFile != null)
+                          Text('File picked successfully.'),
                         FormSwitch(
                           label: "Are you open for donations?",
                           controller: _isOpenforDonations,
@@ -184,11 +197,50 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                   PrimaryButton(
                     label: "Sign-up",
                     gradient: ProjectColors().bluePrimaryGradient,
-                    onTap: () {
+                    onTap: () async {
                       if (_formKey.currentState!.validate()) {
+                        String id = randomAlpha(10);
+                        User userData = User(
+                          userId: id,
+                          name: _name.text,
+                          username: _username.text,
+                          password: _password.text,
+                          addresses: [_address1.text, _address2.text],
+                          contactNo: _contactNumber.text,
+                          description: _description.text,
+                          isOrganization: _isOrganization.isSwitchOn,
+                          openForDonations: _isOpenforDonations.isSwitchOn,
+                          isApproved: false,
+                          proofOfLegitimacyBase64:
+                              UserProvider.proofOfLegitimacyBase64,
+                        );
+                        //For debugging purposes
+                        print('User ID: ${userData.userId}');
+                        print('Name: ${userData.name}');
+                        print('Username: ${userData.username}');
+                        print('Password: ${userData.password}');
+                        print('Addresses: ${userData.addresses}');
+                        print('Contact Number: ${userData.contactNo}');
+                        print('Description: ${userData.description}');
+                        print('Is Organization: ${userData.isOrganization}');
+                        print(
+                            'Open for Donations: ${userData.openForDonations}');
+                        print('Is Approved: ${userData.isApproved}');
+                        print(
+                            'Proof of Legitimacy (Base64): ${userData.proofOfLegitimacyBase64}');
                         //call the provider for saving the user data
-                        Navigator.pushReplacementNamed(
-                            context, '/donor_dashboard');
+                        try {
+                          await UserAuth.register(userData);
+                          Navigator.pushReplacementNamed(
+                              context, '/donor_dashboard');
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    'Failed to sign up. Please try again later.')),
+                          );
+                          print('Failed to sign up: $error');
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
