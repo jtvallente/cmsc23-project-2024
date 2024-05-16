@@ -86,4 +86,6 @@ class FirebaseAuthUserProvider with ChangeNotifier {
     _saveUserToPrefs(updatedUser);
     notifyListeners();
   }
+
+  //NEED TO ADD METHOD HERE FOR CHECKING THE USERNAME (IF IT EXISTS OR NOTS)
 }

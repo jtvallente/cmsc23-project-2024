@@ -7,6 +7,7 @@ import 'package:elbi_donation_system/components/form_switch.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:elbi_donation_system/components/input_checker.dart';
 
 class UserSignUpPage extends StatefulWidget {
   @override
@@ -17,7 +18,8 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  final TextEditingController _address = TextEditingController();
+  final TextEditingController _address1 = TextEditingController();
+  final TextEditingController _address2 = TextEditingController();
   final TextEditingController _contactNumber = TextEditingController();
 
   final SwitchController _isOrganization = SwitchController();
@@ -33,8 +35,8 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
       _name.clear();
       _username.clear();
       _password.clear();
-      _address.clear();
-      _address.clear();
+      _address1.clear();
+      _address2.clear();
       _contactNumber.clear();
       _isOrganization.setValue(false);
       _description.clear();
@@ -87,11 +89,17 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                           FormTextField(
                               isNum: false,
                               isPassword: false,
-                              label: "Address",
-                              controller: _address,
+                              label: "Address 1",
+                              controller: _address1,
                               inputType: TextInputType.text),
                           FormTextField(
                               isNum: false,
+                              isPassword: false,
+                              label: "Address 2",
+                              controller: _address2,
+                              inputType: TextInputType.text),
+                          FormTextField(
+                              isNum: true,
                               isPassword: false,
                               label: "Contact Number",
                               controller: _contactNumber,
@@ -132,11 +140,20 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         label: "Sign-up",
                         gradient: ProjectColors().bluePrimaryGradient,
                         onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, '/donor_dashboard');
+                          // Validate the form
+                          if (_formKey.currentState!.validate()) {
+                            Navigator.pushReplacementNamed(
+                                context, '/donor_dashboard');
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Please correct the errors in the form')),
+                            );
+                          }
                         },
                         fillWidth: true,
-                      )
+                      ),
                     ]),
               ),
             ),
