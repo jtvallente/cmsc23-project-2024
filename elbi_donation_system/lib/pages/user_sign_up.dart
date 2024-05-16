@@ -7,7 +7,6 @@ import 'package:elbi_donation_system/components/form_switch.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:elbi_donation_system/components/input_checker.dart';
 
 class UserSignUpPage extends StatefulWidget {
   @override
@@ -21,16 +20,14 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
   final TextEditingController _address1 = TextEditingController();
   final TextEditingController _address2 = TextEditingController();
   final TextEditingController _contactNumber = TextEditingController();
+  final TextEditingController _description = TextEditingController();
 
   final SwitchController _isOrganization = SwitchController();
-  //Proof of legitimacy
-  bool? isApproved;
-  final TextEditingController _description = TextEditingController();
   final SwitchController _isOpenforDonations = SwitchController();
 
   final _formKey = GlobalKey<FormState>();
 
-  resetValues() {
+  void resetValues() {
     setState(() {
       _name.clear();
       _username.clear();
@@ -49,115 +46,165 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
     SchedulerBinding.instance.addPostFrameCallback((_) => resetValues());
   }
 
+  String? _validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your name';
+    }
+    return null;
+  }
+
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a username';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+    return null;
+  }
+
+  String? _validateAddress(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an address';
+    }
+    return null;
+  }
+
+  String? _validateContactNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a contact number';
+    } else if (num.tryParse(value) == null) {
+      return 'Contact number should be a number';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FormBanner(
-          actions: [],
-          gradient: ProjectColors().bluePrimaryGradient,
-          color: ProjectColors().bluePrimary,
-          title: "Sign-up",
-          subtitle: "User",
-          widget: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        actions: [],
+        gradient: ProjectColors().bluePrimaryGradient,
+        color: ProjectColors().bluePrimary,
+        title: "Sign-up",
+        subtitle: "User",
+        widget: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
                     children: [
-                      Column(
-                        children: [
-                          FormTextField(
-                              isNum: false,
-                              isPassword: false,
-                              label: "Name",
-                              controller: _name,
-                              inputType: TextInputType.name),
-                          FormTextField(
-                              isNum: false,
-                              isPassword: false,
-                              label: "Username",
-                              controller: _username,
-                              inputType: TextInputType.text),
-                          FormTextField(
-                              isNum: false,
-                              isPassword: true,
-                              label: "Password",
-                              controller: _password,
-                              inputType: TextInputType.text),
-                          FormTextField(
-                              isNum: false,
-                              isPassword: false,
-                              label: "Address 1",
-                              controller: _address1,
-                              inputType: TextInputType.text),
-                          FormTextField(
-                              isNum: false,
-                              isPassword: false,
-                              label: "Address 2",
-                              controller: _address2,
-                              inputType: TextInputType.text),
-                          FormTextField(
-                              isNum: true,
-                              isPassword: false,
-                              label: "Contact Number",
-                              controller: _contactNumber,
-                              inputType: TextInputType.phone),
-                          FormSwitch(
-                              label: "Are you an organization?",
-                              controller: _isOrganization),
-                          FormTextField(
-                              isNum: false,
-                              isPassword: false,
-                              label: "Description",
-                              controller: _description,
-                              inputType: TextInputType.text),
-                          FormRowButton(
-                              icon: Icons.upload,
-                              buttonLabel: "Upload File",
-                              label: "Proof of Legitimacy",
-                              onTap: () {}),
-                          FormSwitch(
-                              label: "Are you open for donations?",
-                              controller: _isOpenforDonations),
-                          // _isOrganization.isSwitchOn
-                          //     ?
-                          // Column(children: [
-                          //   FormTextField(
-                          //       isNum: false,
-                          //       label: "Description",
-                          //       controller: _description,
-                          //       isPassword: false,
-                          //       inputType: TextInputType.text),
-                          //   FormFileUpload(onTap: () {})
-                          // ])
-                          // : Container()
-                        ],
+                      FormTextField(
+                        isNum: false,
+                        isPassword: false,
+                        label: "Name",
+                        controller: _name,
+                        inputType: TextInputType.name,
+                        validator: _validateName,
                       ),
-                      const SizedBox(height: 50),
-                      PrimaryButton(
-                        label: "Sign-up",
-                        gradient: ProjectColors().bluePrimaryGradient,
-                        onTap: () {
-                          // Validate the form
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.pushReplacementNamed(
-                                context, '/donor_dashboard');
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(
-                                      'Please correct the errors in the form')),
-                            );
-                          }
+                      FormTextField(
+                        isNum: false,
+                        isPassword: false,
+                        label: "Username",
+                        controller: _username,
+                        inputType: TextInputType.text,
+                        validator: _validateUsername,
+                      ),
+                      FormTextField(
+                        isNum: false,
+                        isPassword: true,
+                        label: "Password",
+                        controller: _password,
+                        inputType: TextInputType.text,
+                        validator: _validatePassword,
+                      ),
+                      FormTextField(
+                        isNum: false,
+                        isPassword: false,
+                        label: "Address 1",
+                        controller: _address1,
+                        inputType: TextInputType.text,
+                        validator: _validateAddress,
+                      ),
+                      FormTextField(
+                        isNum: false,
+                        isPassword: false,
+                        label: "Address 2",
+                        controller: _address2,
+                        inputType: TextInputType.text,
+                        validator: _validateAddress,
+                      ),
+                      FormTextField(
+                        isNum: true,
+                        isPassword: false,
+                        label: "Contact Number",
+                        controller: _contactNumber,
+                        inputType: TextInputType.phone,
+                        validator: _validateContactNumber,
+                      ),
+                      FormSwitch(
+                        label: "Are you an organization?",
+                        controller: _isOrganization,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _isOrganization.setValue(value);
+                          });
                         },
-                        fillWidth: true,
                       ),
-                    ]),
+                      if (_isOrganization.isSwitchOn) ...[
+                        FormTextField(
+                          isNum: false,
+                          isPassword: false,
+                          label: "Description",
+                          controller: _description,
+                          inputType: TextInputType.text,
+                        ),
+                        FormRowButton(
+                          icon: Icons.upload,
+                          buttonLabel: "Upload File",
+                          label: "Proof of Legitimacy",
+                          onTap: () {},
+                        ),
+                        FormSwitch(
+                          label: "Are you open for donations?",
+                          controller: _isOpenforDonations,
+                        ),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 50),
+                  PrimaryButton(
+                    label: "Sign-up",
+                    gradient: ProjectColors().bluePrimaryGradient,
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        //call the provider for saving the user data
+                        Navigator.pushReplacementNamed(
+                            context, '/donor_dashboard');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  'Please correct the errors in the form')),
+                        );
+                      }
+                    },
+                    fillWidth: true,
+                  ),
+                ],
               ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

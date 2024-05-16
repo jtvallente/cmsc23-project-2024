@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FormTextField extends StatefulWidget {
+class FormTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final TextInputType inputType;
   final bool isNum;
   final bool isPassword;
   final bool? readOnly;
+  final String? Function(String?)? validator;
 
   const FormTextField({
     required this.isNum,
@@ -14,46 +15,10 @@ class FormTextField extends StatefulWidget {
     required this.controller,
     required this.isPassword,
     this.readOnly = false,
-    super.key,
     required this.inputType,
+    this.validator,
+    super.key,
   });
-
-  @override
-  State<FormTextField> createState() => _FormTextFieldState();
-}
-
-class _FormTextFieldState extends State<FormTextField> {
-  String _errorMessage = '';
-
-  @override
-  void initState() {
-    super.initState();
-    widget.controller.addListener(() {
-      setState(() {
-        _validateInput(widget.controller.text);
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    widget.controller.dispose();
-    super.dispose();
-  }
-
-  void _validateInput(String value) {
-    setState(() {
-      if (value.isEmpty) {
-        _errorMessage = "Please enter an input!";
-      } else if (widget.isNum && num.tryParse(value) == null) {
-        _errorMessage = "Invalid input! Contact number should be a number.";
-      } else if (widget.isPassword && value.length < 8) {
-        _errorMessage = "Password must be at least 8 characters long!";
-      } else {
-        _errorMessage = '';
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,20 +27,19 @@ class _FormTextFieldState extends State<FormTextField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.label),
+          Text(label),
           const SizedBox(height: 5),
           TextFormField(
-            readOnly: widget.readOnly!,
-            keyboardType: widget.inputType,
-            obscureText: widget.isPassword,
-            onChanged: _validateInput,
-            controller: widget.controller,
+            readOnly: readOnly!,
+            keyboardType: inputType,
+            obscureText: isPassword,
+            controller: controller,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
-              errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
             ),
+            validator: validator,
           ),
         ],
       ),
