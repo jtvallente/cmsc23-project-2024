@@ -108,7 +108,8 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                           FormRowButton(
                               icon: Icons.upload,
                               buttonLabel: "Upload File",
-                              label: "Proof of Legitimacy", onTap: () {}),
+                              label: "Proof of Legitimacy",
+                              onTap: () {}),
                           FormSwitch(
                               label: "Are you open for donations?",
                               controller: _isOpenforDonations),
@@ -128,11 +129,14 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                       ),
                       const SizedBox(height: 50),
                       PrimaryButton(
-                          label: "Sign-up",
-                          gradient: ProjectColors().bluePrimaryGradient,
-                          onTap: () {
-                            Navigator.pushNamed(context, '/donor_dashboard');
-                          }, fillWidth: true,)
+                        label: "Sign-up",
+                        gradient: ProjectColors().bluePrimaryGradient,
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                              context, '/donor_dashboard');
+                        },
+                        fillWidth: true,
+                      )
                     ]),
               ),
             ),
