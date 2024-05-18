@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'dart:convert';
-import 'package:elbi_donation_system/apis/FirebaseUserAPI.dart';
+import 'package:elbi_donation_system/api/FirebaseUserAPI.dart';
 
 class FirebaseUserProvider with ChangeNotifier {
   List<String> _proofOfLegitimacyBase64 = [];
