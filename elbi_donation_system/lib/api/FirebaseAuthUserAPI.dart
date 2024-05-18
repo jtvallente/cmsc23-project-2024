@@ -1,13 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elbi_donation_system/models/users.dart' as model;
 
 class FirebaseAuthAPI {
-  static final FirebaseAuth userAuth = FirebaseAuth.instance;
+  static final auth.FirebaseAuth userAuth = auth.FirebaseAuth.instance;
+  static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  User? getUser() {
+  auth.User? getUser() {
     return userAuth.currentUser;
   }
 
-  Stream<User?> userSignedIn() {
+  Stream<auth.User?> userSignedIn() {
     return userAuth.authStateChanges();
   }
 
@@ -16,25 +19,16 @@ class FirebaseAuthAPI {
       await userAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return "";
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email') {
-        return e.message;
-      } else if (e.code == 'invalid-credential') {
-        return e.message;
-      } else {
-        return "Failed at ${e.code}: ${e.message}";
-      }
+    } on auth.FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
 
   Future<void> register(String email, String password) async {
-    UserCredential credential;
     try {
-      credential = await userAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on FirebaseAuthException catch (e) {
+      await userAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+    } on auth.FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
@@ -45,5 +39,17 @@ class FirebaseAuthAPI {
 
   Future<void> logout() async {
     await userAuth.signOut();
+  }
+
+  Future<void> saveUserData(model.User user, String uid) async {
+    await firestore.collection('users').doc(uid).set(user.toJson());
+  }
+
+  Future<model.User?> getUserData(String uid) async {
+    DocumentSnapshot doc = await firestore.collection('users').doc(uid).get();
+    if (doc.exists) {
+      return model.User.fromJson(doc.data() as Map<String, dynamic>);
+    }
+    return null;
   }
 }

@@ -4,7 +4,7 @@ import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/components/controllers.dart';
 import 'package:elbi_donation_system/components/form_row_button.dart';
 import 'package:elbi_donation_system/components/form_switch.dart';
-import 'package:elbi_donation_system/models/User.dart';
+import 'package:elbi_donation_system/models/users.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
 import 'package:random_string/random_string.dart';
 import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
+import 'package:elbi_donation_system/components/input_checker.dart';
 
 class UserSignUpPage extends StatefulWidget {
   @override
@@ -26,6 +27,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
   final TextEditingController _address2 = TextEditingController();
   final TextEditingController _contactNumber = TextEditingController();
   final TextEditingController _description = TextEditingController();
+  final TextEditingController _email = TextEditingController();
 
   final SwitchController _isOrganization = SwitchController();
   final SwitchController _isOpenforDonations = SwitchController();
@@ -35,6 +37,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
   void resetValues() {
     setState(() {
       _name.clear();
+      _email.clear();
       _username.clear();
       _password.clear();
       _address1.clear();
@@ -54,6 +57,19 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your name';
+    }
+    return null;
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an email';
+    }
+    // Regular expression for validating an email
+    final RegExp emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email';
     }
     return null;
   }
@@ -90,8 +106,8 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider = context.watch<FirebaseUserProvider>();
-    final UserAuth = context.watch<FirebaseAuthUserProvider>();
+    final userProvider = context.watch<FirebaseUserProvider>();
+    final userAuth = context.watch<FirebaseAuthUserProvider>();
 
     return Scaffold(
       body: FormBanner(
@@ -117,6 +133,14 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         controller: _name,
                         inputType: TextInputType.name,
                         validator: _validateName,
+                      ),
+                      FormTextField(
+                        isNum: false,
+                        isPassword: false,
+                        label: "E-mail",
+                        controller: _email,
+                        inputType: TextInputType.emailAddress,
+                        validator: _validateEmail,
                       ),
                       FormTextField(
                         isNum: false,
@@ -180,12 +204,30 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                           buttonLabel: "Upload File",
                           label: "Proof of Legitimacy",
                           onTap: () async {
-                            await UserProvider.pickFile();
-                            //await UserProvider.uploadFile();
+                            await userProvider.pickFile();
                           },
                         ),
-                        if (UserProvider.selectedFile != null)
-                          Text('File picked successfully.'),
+                        if (userProvider.selectedFiles.isNotEmpty)
+                          Column(
+                            children: userProvider.selectedFiles.map((file) {
+                              int index =
+                                  userProvider.selectedFiles.indexOf(file);
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      child: Text(file.path.split('/').last)),
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () {
+                                      userProvider.removeFile(index);
+                                    },
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
                         FormSwitch(
                           label: "Are you open for donations?",
                           controller: _isOpenforDonations,
@@ -203,6 +245,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         User userData = User(
                           userId: id,
                           name: _name.text,
+                          email: _email.text,
                           username: _username.text,
                           password: _password.text,
                           addresses: [_address1.text, _address2.text],
@@ -212,10 +255,11 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                           openForDonations: _isOpenforDonations.isSwitchOn,
                           isApproved: false,
                           proofOfLegitimacyBase64:
-                              UserProvider.proofOfLegitimacyBase64,
+                              userProvider.proofOfLegitimacyBase64,
                         );
                         //For debugging purposes
                         print('User ID: ${userData.userId}');
+                        print('Email: ${userData.email}');
                         print('Name: ${userData.name}');
                         print('Username: ${userData.username}');
                         print('Password: ${userData.password}');
@@ -229,8 +273,10 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         print(
                             'Proof of Legitimacy (Base64): ${userData.proofOfLegitimacyBase64}');
                         //call the provider for saving the user data
+                        String email = _email.text;
+                        String password = _password.text;
                         try {
-                          await UserAuth.register(userData);
+                          await userAuth.register(email, password, userData);
                           Navigator.pushReplacementNamed(
                               context, '/donor_dashboard');
                         } catch (error) {

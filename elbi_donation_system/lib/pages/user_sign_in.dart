@@ -12,7 +12,7 @@ class UserSignInPage extends StatefulWidget {
 }
 
 class _UserSignInPageState extends State<UserSignInPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -46,8 +46,8 @@ class _UserSignInPageState extends State<UserSignInPage> {
                         FormTextField(
                           isNum: false,
                           isPassword: false,
-                          label: "Username",
-                          controller: _usernameController,
+                          label: "Email",
+                          controller: _emailController,
                           inputType: TextInputType.emailAddress,
                         ),
                         FormTextField(
@@ -86,13 +86,13 @@ class _UserSignInPageState extends State<UserSignInPage> {
                           gradient: ProjectColors().greenPrimaryGradient,
                           onTap: () async {
                             if (_formKey.currentState?.validate() ?? false) {
-                              String username = _usernameController.text;
+                              String email = _emailController.text;
                               String password = _passwordController.text;
 
                               try {
                                 bool success = await context
                                     .read<FirebaseAuthUserProvider>()
-                                    .login(username, password);
+                                    .login(email, password);
 
                                 if (success) {
                                   Navigator.pushReplacementNamed(

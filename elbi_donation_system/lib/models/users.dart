@@ -1,6 +1,7 @@
 class User {
   String userId;
   String name;
+  String email;
   String username;
   String password;
   List<String> addresses;
@@ -14,6 +15,7 @@ class User {
   User({
     required this.userId,
     required this.name,
+    required this.email,
     required this.username,
     required this.password,
     required this.addresses,
@@ -30,6 +32,7 @@ class User {
     return {
       'userId': userId,
       'name': name,
+      'email': email,
       'username': username,
       'password': password,
       'addresses': addresses,
@@ -47,6 +50,7 @@ class User {
     return User(
       userId: json['userId'],
       name: json['name'],
+      email: json['email'],
       username: json['username'],
       password: json['password'],
       addresses: List<String>.from(json['addresses']),
