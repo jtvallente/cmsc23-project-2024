@@ -95,8 +95,27 @@ class _UserSignInPageState extends State<UserSignInPage> {
                                     .login(email, password);
 
                                 if (success) {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/donor_dashboard');
+                                  var userProvider =
+                                      context.read<FirebaseAuthUserProvider>();
+                                  var user = userProvider.currentUser;
+
+                                  if (user != null) {
+                                    bool isOrganization = user.isOrganization;
+                                    if (isOrganization) {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/organization_dashboard');
+                                    } else {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/donor_dashboard');
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Failed to retrieve user data.'),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

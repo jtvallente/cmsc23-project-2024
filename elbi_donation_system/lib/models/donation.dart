@@ -7,7 +7,7 @@ class Donation {
   String? photo; // Optional photo, represented as a URL or base64 string
   DateTime dateTime;
   String? address; // Optional address for pickup
-  String? contactNumber; // Optional contact number for pickup
+  String? contactNumber; // Foreign key to the user who made the donation
   String status;
 
   Donation({
