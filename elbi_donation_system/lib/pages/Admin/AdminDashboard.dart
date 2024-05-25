@@ -14,6 +14,7 @@ class AdminDashboard extends StatelessWidget {
         child: Text(
           'Welcome, ${adminData.name}',
           style: TextStyle(fontSize: 24),
+          
         ),
       ),
     );

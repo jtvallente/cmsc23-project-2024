@@ -49,4 +49,5 @@ class FirebaseUserProvider with ChangeNotifier {
   //     }
   //   }
   // }
+  
 }
