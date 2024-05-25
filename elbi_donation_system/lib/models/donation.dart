@@ -1,6 +1,7 @@
 class Donation {
   String donationId;
   String donorId; // Foreign Key to the User who made the donation
+  String OrganizationId;
   String category;
   String deliveryMethod;
   double weight;
@@ -15,6 +16,7 @@ class Donation {
   Donation({
     required this.donationId,
     required this.donorId,
+    required this.OrganizationId,
     required this.category,
     required this.deliveryMethod,
     required this.weight,
@@ -30,6 +32,7 @@ class Donation {
     return {
       'donationId': donationId,
       'donorId': donorId,
+      'organizationId': OrganizationId,
       'category': category,
       'deliveryMethod': deliveryMethod,
       'weight': weight,
@@ -46,6 +49,7 @@ class Donation {
     return Donation(
       donationId: json['donationId'] ?? '',
       donorId: json['donorId'] ?? '',
+      OrganizationId: json['organizationId'],
       category: json['category'] ?? '',
       deliveryMethod: json['deliveryMethod'] ?? '',
       weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
