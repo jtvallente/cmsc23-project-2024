@@ -93,7 +93,6 @@ class _UserSignInPageState extends State<UserSignInPage> {
                                 bool success = await context
                                     .read<FirebaseAuthUserProvider>()
                                     .login(email, password);
-
                                 if (success) {
                                   var userProvider =
                                       context.read<FirebaseAuthUserProvider>();

@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elbi_donation_system/api/FirebaseUserAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'dart:convert';
 
 class FirebaseUserProvider with ChangeNotifier {
+    FirebaseUserAPI firebaseService = FirebaseUserAPI();
   List<String> _proofOfLegitimacyBase64 = [];
   List<File> _selectedFiles = [];
 
   List<String> get proofOfLegitimacyBase64 => _proofOfLegitimacyBase64;
   List<File> get selectedFiles => _selectedFiles;
+
+
 
   Future<void> pickFile() async {
     FilePickerResult? result =

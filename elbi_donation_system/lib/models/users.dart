@@ -54,7 +54,7 @@ class User {
       username: json['username'],
       password: json['password'],
       addresses: List<String>.from(json['addresses']),
-      contactNo: json['contactNo'],
+      contactNo: json['contactNo'].toString(),
       isOrganization: json['isOrganization'],
       proofOfLegitimacyBase64:
           List<String>.from(json['proofOfLegitimacyBase64']),
