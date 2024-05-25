@@ -19,8 +19,9 @@ import 'pages/Welcome.dart';
 import 'pages/Admin/AdminDashboard.dart';
 import 'pages/Admin/AdminDonorDetails.dart';
 import 'pages/Admin/AdminOrgDetails.dart';
-import 'pages/Admin/ApproveOrg.dart';
+import 'pages/Admin/OrganizationsList.dart';
 import 'pages/Admin/DonorsList.dart';
+import 'pages/Admin/AdminDonations.dart';
 
 //ORG PAGES IMPORT
 import 'pages/Organization/DonationDriveDetails.dart';
@@ -78,8 +79,9 @@ class MyApp extends StatelessWidget {
         '/admin_dashboard': (context) => AdminDashboard(),
         '/admin_donor_details': (context) => AdminDonorDetails(),
         '/admin_org_details': (context) => AdminOrgDetails(),
-        '/approve_org': (context) => ApproveOrg(),
-        '/donors_list': (context) => DonorsList(),
+        '/organizations_list': (context) => OrganizationsListPage(),
+        '/donors_list': (context) => DonorsListPage(),
+        '/donations_list': (context) => AdminDonations(),
 
         // Organization routes
         '/organization_dashboard': (context) => OrganizationDashboard(),

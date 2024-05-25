@@ -4,16 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'dart:convert';
+import 'package:elbi_donation_system/models/donation.dart';
+import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 
 class FirebaseUserProvider with ChangeNotifier {
-    FirebaseUserAPI firebaseService = FirebaseUserAPI();
+  FirebaseUserAPI firebaseService = FirebaseUserAPI();
+  List<Donation> _userDonations = [];
+
   List<String> _proofOfLegitimacyBase64 = [];
   List<File> _selectedFiles = [];
+  List<String> _photos = [];
 
   List<String> get proofOfLegitimacyBase64 => _proofOfLegitimacyBase64;
   List<File> get selectedFiles => _selectedFiles;
-
-
+  List<String> get photos => _photos;
+  List<Donation> get userDonations => _userDonations;
 
   Future<void> pickFile() async {
     FilePickerResult? result =
@@ -33,26 +38,62 @@ class FirebaseUserProvider with ChangeNotifier {
     }
   }
 
-  void removeFile(int index) {
+  Future<void> addPickedFile(File file) async {
+    _selectedFiles.add(file);
+
+    List<int> fileBytes = await file.readAsBytes();
+    String base64File = base64Encode(fileBytes);
+    print(base64);
+    _photos.add(base64File);
+
+    notifyListeners();
+  }
+
+  void removeFilePhoto(int index) {
+    _selectedFiles.removeAt(index);
+    _photos.removeAt(index);
+    notifyListeners();
+  }
+
+  void removeFileMedia(int index) {
     _selectedFiles.removeAt(index);
     _proofOfLegitimacyBase64.removeAt(index);
     notifyListeners();
   }
 
-  // Future<void> uploadFile() async {
-  //   if (_selectedFile != null) {
-  //     try {
-  //       FirebaseUserAPI firebaseStorageService = FirebaseUserAPI();
-  //       String downloadUrl = await firebaseStorageService.uploadFile(
-  //         _selectedFile!,
-  //         'uploads/${_selectedFile!.path.split('/').last}',
-  //       );
-  //       _downloadUrl = downloadUrl;
-  //       notifyListeners();
-  //     } catch (e) {
-  //       throw Exception('File upload failed: $e');
-  //     }
-  //   }
-  // }
-  
+  // Create a donation
+  Future<void> createDonation(Donation newDonation) async {
+    try {
+      await firebaseService.addDonation(newDonation);
+      notifyListeners();
+    } catch (e) {
+      print("Error creating donation: $e");
+    }
+  }
+
+  // Fetch user-specific donations
+  Future<void> fetchUserDonations(String userId) async {
+    print("USER ID: $userId");
+    try {
+      _userDonations = await firebaseService.getDonationsForUser(userId);
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching user donations: $e");
+    }
+  }
+
+  Future<DocumentSnapshot> getUserDocument(String userId) async {
+    try {
+      // Get the user document from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      return userDoc;
+    } catch (e) {
+      // Handle any errors
+      print('Error fetching user document: $e');
+      throw e;
+    }
+  }
 }

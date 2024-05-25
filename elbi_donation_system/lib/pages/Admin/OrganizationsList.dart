@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_system/models/users.dart';
+import 'package:elbi_donation_system/providers/FirebaseAdminProvider.dart';
+import 'package:provider/provider.dart';
 
-class DonorsListPage extends StatefulWidget {
+class OrganizationsListPage extends StatefulWidget {
   @override
-  _DonorsListPageState createState() => _DonorsListPageState();
+  _OrganizationsListPageState createState() => _OrganizationsListPageState();
 }
 
-class _DonorsListPageState extends State<DonorsListPage> {
+class _OrganizationsListPageState extends State<OrganizationsListPage> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> donorsStream = FirebaseFirestore.instance
+    Stream<QuerySnapshot> organizationsStream = FirebaseFirestore.instance
         .collection('users')
-        .where('isOrganization', isEqualTo: false)
-        .where('isApproved', isEqualTo: false)
+        .where('isOrganization', isEqualTo: true)
+        .where('isApproved', isEqualTo: true)
         .snapshots();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Donors List'),
+        title: Text('Organizations List'),
       ),
       body: Column(
         children: [
           Expanded(
             child: StreamBuilder(
-              stream: donorsStream,
+              stream: organizationsStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -37,23 +39,23 @@ class _DonorsListPageState extends State<DonorsListPage> {
                   );
                 } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Center(
-                    child: Text("No Donors Found"),
+                    child: Text("No Orgs Found"),
                   );
                 }
 
-                List<User> donors = [];
+                List<User> organizations = [];
                 snapshot.data!.docs.forEach((doc) {
                   User user = User.fromJson(doc.data() as Map<String, dynamic>);
                   user.userId = doc.id;
-                  donors.add(user);
+                  organizations.add(user);
                 });
 
                 return ListView.builder(
-                  itemCount: donors.length,
+                  itemCount: organizations.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(donors[index].name),
-                      leading: Text(donors[index].username),
+                      title: Text(organizations[index].name),
+                      leading: Text(organizations[index].username),
                     );
                   },
                 );

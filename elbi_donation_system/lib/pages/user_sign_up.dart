@@ -221,7 +221,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                                   IconButton(
                                     icon: Icon(Icons.delete),
                                     onPressed: () {
-                                      userProvider.removeFile(index);
+                                      userProvider.removeFilePhoto(index);
                                     },
                                   ),
                                 ],
@@ -241,9 +241,10 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                     gradient: ProjectColors().bluePrimaryGradient,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        String id = randomAlpha(10);
+                        //change the random alpha to be the document id of the user!
+                        //String id = randomAlpha(10);
                         User userData = User(
-                          userId: id,
+                          userId: '',
                           name: _name.text,
                           email: _email.text,
                           username: _username.text,
@@ -277,6 +278,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         String password = _password.text;
                         try {
                           await userAuth.register(email, password, userData);
+
                           Navigator.pushReplacementNamed(
                               context, '/donor_dashboard');
                         } catch (error) {

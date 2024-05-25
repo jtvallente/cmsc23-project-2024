@@ -6,7 +6,6 @@ import 'package:elbi_donation_system/api/FirebaseDonationsAPI.dart';
 
 // Provider for managing donations
 class DonationProvider with ChangeNotifier {
-
   //fetch all donation
 
   //submit donation

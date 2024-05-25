@@ -35,9 +35,7 @@ class _FormBannerState extends State<FormBanner> {
             leading: widget.isRoot
                 ? null
                 : IconButton(
-                    icon: Icon(Icons.arrow_back_rounded,
-                    
-                        color: Colors.white),
+                    icon: Icon(Icons.arrow_back_rounded, color: Colors.white),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
             stretch: false,

@@ -12,6 +12,8 @@ class FirebaseAuthUserProvider with ChangeNotifier {
 
   User? get currentUser => _currentUser;
   bool get isAuthenticated => _currentUser != null;
+  String? get currentUserId =>
+      _authAPI.getUser()?.uid; // Added getter for currentUserId
 
   FirebaseAuthUserProvider() {
     _loadUserFromPrefs();
@@ -68,13 +70,27 @@ class FirebaseAuthUserProvider with ChangeNotifier {
   }
 
   Future<void> register(String email, String password, User newUser) async {
-    await _authAPI.register(email, password);
-    String uid = _authAPI.getUser()!.uid;
-    await _authAPI.saveUserData(newUser, uid);
-    _currentUser = newUser;
-    _currentUserEmail = email;
-    await _saveUserToPrefs(newUser, email);
-    notifyListeners();
+    try {
+      await _authAPI.register(email, password);
+
+      String uid = _authAPI.getUser()!.uid;
+
+      print("UID: $uid");
+
+      newUser.userId = uid;
+
+      await _authAPI.saveUserData(newUser, uid);
+
+      _currentUser = newUser;
+      _currentUserEmail = email;
+
+      // Save the user data to local storage or preferences
+      await _saveUserToPrefs(newUser, email);
+
+      notifyListeners();
+    } catch (error) {
+      print("Error registering user: $error");
+    }
   }
 
   void updateUser(User updatedUser) {
@@ -97,8 +113,6 @@ class FirebaseAuthUserProvider with ChangeNotifier {
   }
 
   Future<bool> checkUsernameExists(String username) async {
-    // Implement logic to check if the username exists in your backend or user database
-    // For example, you could send a request to your backend API to check if the username is already taken
     return false;
   }
 }
