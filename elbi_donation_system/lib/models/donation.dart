@@ -51,7 +51,7 @@ class Donation {
     return Donation(
       donationId: json['donationId'] ?? '',
       donorId: json['donorId'] ?? '',
-      OrganizationId: json['organizationId'] ?? '',
+      OrganizationId: json['OrganizationId'] ?? '',
       category: json['category'] ?? '',
       deliveryMethod: json['deliveryMethod'] ?? '',
       weight: (json['weight'] ?? 0.0).toDouble(),

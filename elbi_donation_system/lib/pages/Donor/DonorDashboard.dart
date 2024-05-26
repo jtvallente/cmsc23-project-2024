@@ -66,6 +66,13 @@ class _DonorDashboardState extends State<DonorDashboard> {
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    Navigator.pushNamed(context, '/donor_profile',
+                        arguments: authProvider.currentUser);
+                  },
+                  child: Text('Profile'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
                     Navigator.pushNamed(context, '/donor_organization_list');
                   },
                   child: Text('View Organizations'),

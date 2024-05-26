@@ -162,11 +162,8 @@ class _MakeDonationState extends State<MakeDonation> {
         addresses: _deliveryMethod == "Pickup" ? addresses : [],
         contactNumber: _contactNumber.text,
         status: "Pending",
-        qrCode: null,
+        qrCode: "",
       );
-
-      // Generate QR code data after creating the donation
-      newDonation.qrCode = generateQRCodeData(newDonation.donationId);
 
       // Show the success dialog
       await showDialog(

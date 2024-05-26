@@ -5,12 +5,16 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:elbi_donation_system/models/donation.dart';
+import 'package:elbi_donation_system/models/users.dart';
+import 'package:elbi_donation_system/models/donationdrive.dart';
+
 import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 
 class FirebaseUserProvider with ChangeNotifier {
   FirebaseUserAPI firebaseService = FirebaseUserAPI();
   List<Donation> _userDonations = [];
   Stream<QuerySnapshot>? _organizationStream;
+  Stream<QuerySnapshot>? _organizationDonationsStream;
 
   List<String> _proofOfLegitimacyBase64 = [];
   List<File> _selectedFiles = [];
@@ -21,6 +25,8 @@ class FirebaseUserProvider with ChangeNotifier {
   List<String> get photos => _photos;
   List<Donation> get userDonations => _userDonations;
   Stream<QuerySnapshot>? get organizationStream => _organizationStream;
+  Stream<QuerySnapshot>? get organizationDonationsStream =>
+      _organizationDonationsStream;
 
   Future<void> pickFile() async {
     FilePickerResult? result =
@@ -108,6 +114,16 @@ class FirebaseUserProvider with ChangeNotifier {
     }
   }
 
+  // Update a user
+  Future<void> updateUser(User user) async {
+    try {
+      await firebaseService.updateUser(user);
+      notifyListeners();
+    } catch (e) {
+      print("Error updating donation: $e");
+    }
+  }
+
   // Update a donation
   Future<void> updateDonation(Donation donation) async {
     try {
@@ -115,6 +131,26 @@ class FirebaseUserProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Error updating donation: $e");
+    }
+  }
+
+  //get the donations sent to an org
+  Future<void> getAllUserDonations(String uid) async {
+    try {
+      _organizationDonationsStream = firebaseService.getAllUserDonations(uid);
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching donations: $e");
+    }
+  }
+
+  // Create a donation
+  Future<void> createDonationDrive(DonationDrive newDonationDrive) async {
+    try {
+      await firebaseService.addDonationDrive(newDonationDrive);
+      notifyListeners();
+    } catch (e) {
+      print("Error creating donation: $e");
     }
   }
 }
