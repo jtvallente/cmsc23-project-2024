@@ -126,7 +126,7 @@ class FirebaseUserAPI {
       await firestore
           .collection('donationDrive')
           .doc(donationDrive.donationDriveId)
-          .set(donationDrive.donationToJson());
+          .set(donationDrive.donationDriveToJson());
     } catch (e) {
       throw Exception('Failed to add donation drive: $e');
     }

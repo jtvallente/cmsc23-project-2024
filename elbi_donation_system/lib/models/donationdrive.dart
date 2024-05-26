@@ -16,4 +16,10 @@ class DonationDrive {
     required this.donations,
     required this.status,
   });
+
+  donationDriveToJson() {
+  }
+
+  donationDriveFromJson() {
+  }
 }
