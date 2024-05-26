@@ -34,7 +34,7 @@ class AdminDonations extends StatelessWidget {
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: ((context, index) {
-              Donation thisDonation = Donation.fromJson(
+              Donation thisDonation = Donation.donationFromJson(
                   snapshot.data?.docs[index].data() as Map<String, dynamic>);
               thisDonation.donationId = snapshot.data!.docs[index].id;
               return Dismissible(

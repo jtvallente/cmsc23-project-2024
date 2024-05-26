@@ -45,7 +45,7 @@ class _OrganizationsListPageState extends State<OrganizationsListPage> {
 
                 List<User> organizations = [];
                 snapshot.data!.docs.forEach((doc) {
-                  User user = User.fromJson(doc.data() as Map<String, dynamic>);
+                  User user = User.userFromJson(doc.data() as Map<String, dynamic>);
                   user.userId = doc.id;
                   organizations.add(user);
                 });

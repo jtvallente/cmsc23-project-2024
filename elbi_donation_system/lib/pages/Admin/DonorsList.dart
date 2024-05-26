@@ -43,7 +43,7 @@ class _DonorsListPageState extends State<DonorsListPage> {
 
                 List<User> donors = [];
                 snapshot.data!.docs.forEach((doc) {
-                  User user = User.fromJson(doc.data() as Map<String, dynamic>);
+                  User user = User.userFromJson(doc.data() as Map<String, dynamic>);
                   user.userId = doc.id;
                   donors.add(user);
                 });

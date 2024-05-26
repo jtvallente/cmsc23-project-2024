@@ -152,7 +152,7 @@ class _MakeDonationState extends State<MakeDonation> {
       Donation newDonation = Donation(
         donationId: id,
         donorId: userId,
-        OrganizationId: '123456',
+        organizationId: '123456',
         category: _category.text,
         deliveryMethod: _deliveryMethod,
         weight: double.parse(_weight.text),
