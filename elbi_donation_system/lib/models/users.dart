@@ -28,7 +28,7 @@ class User {
   });
 
   // Method to convert a User object to JSON (Map<String, dynamic>)
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> userToJson() {
     return {
       'userId': userId,
       'name': name,
@@ -46,7 +46,7 @@ class User {
   }
 
   // Method to create a User object from JSON (Map<String, dynamic>)
-  static User fromJson(Map<String, dynamic> json) {
+  static User userFromJson(Map<String, dynamic> json) {
     return User(
       userId: json['userId'],
       name: json['name'],
