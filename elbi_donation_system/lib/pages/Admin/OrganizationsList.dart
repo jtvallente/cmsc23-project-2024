@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_system/models/users.dart';
-import 'package:elbi_donation_system/providers/FirebaseAdminProvider.dart';
+import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart'; // Adjust the import to use FirebaseUserProvider
 import 'package:provider/provider.dart';
 
 class OrganizationsListPage extends StatefulWidget {
@@ -11,12 +11,17 @@ class OrganizationsListPage extends StatefulWidget {
 
 class _OrganizationsListPageState extends State<OrganizationsListPage> {
   @override
+  void initState() {
+    super.initState();
+    // Initialize the organization stream
+    Provider.of<FirebaseUserProvider>(context, listen: false)
+        .fetchAllOrganizations();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> organizationsStream = FirebaseFirestore.instance
-        .collection('users')
-        .where('isOrganization', isEqualTo: true)
-        .where('isApproved', isEqualTo: true)
-        .snapshots();
+    Stream<QuerySnapshot>? organizationsStream =
+        context.watch<FirebaseUserProvider>().organizationStream;
 
     return Scaffold(
       appBar: AppBar(

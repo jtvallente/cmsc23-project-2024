@@ -6,6 +6,15 @@ import 'package:elbi_donation_system/models/donation.dart';
 class FirebaseUserAPI {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  //get all orgs that are approved
+  Stream<QuerySnapshot> getAllOrganizations() {
+    return firestore
+        .collection('users')
+        .where('isApproved', isEqualTo: true)
+        .where('isOrganization', isEqualTo: true)
+        .snapshots();
+  }
+
   Future<void> addDonation(Donation donation) async {
     try {
       await firestore

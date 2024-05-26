@@ -37,6 +37,8 @@ class _MakeDonationState extends State<MakeDonation> {
   DateTime? _selectedDateTime;
   String _deliveryMethod = "Pickup"; // Default to "Pickup"
 
+  String? _orgId;
+
   @override
   void initState() {
     super.initState();
@@ -148,11 +150,10 @@ class _MakeDonationState extends State<MakeDonation> {
         addresses.add(_address2.text);
       }
 
-// Now you can use the addresses list in your Donation object
       Donation newDonation = Donation(
         donationId: id,
         donorId: userId,
-        OrganizationId: '123456',
+        OrganizationId: _orgId!,
         category: _category.text,
         deliveryMethod: _deliveryMethod,
         weight: double.parse(_weight.text),
@@ -214,6 +215,9 @@ class _MakeDonationState extends State<MakeDonation> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<FirebaseUserProvider>();
+    final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    final String organizationId = arguments['organizationId'];
+    _orgId = organizationId;
 
     return Scaffold(
       body: FormBanner(

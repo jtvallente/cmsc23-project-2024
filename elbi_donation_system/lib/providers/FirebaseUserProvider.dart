@@ -10,6 +10,7 @@ import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 class FirebaseUserProvider with ChangeNotifier {
   FirebaseUserAPI firebaseService = FirebaseUserAPI();
   List<Donation> _userDonations = [];
+  Stream<QuerySnapshot>? _organizationStream;
 
   List<String> _proofOfLegitimacyBase64 = [];
   List<File> _selectedFiles = [];
@@ -19,6 +20,7 @@ class FirebaseUserProvider with ChangeNotifier {
   List<File> get selectedFiles => _selectedFiles;
   List<String> get photos => _photos;
   List<Donation> get userDonations => _userDonations;
+  Stream<QuerySnapshot>? get organizationStream => _organizationStream;
 
   Future<void> pickFile() async {
     FilePickerResult? result =
@@ -43,7 +45,7 @@ class FirebaseUserProvider with ChangeNotifier {
 
     List<int> fileBytes = await file.readAsBytes();
     String base64File = base64Encode(fileBytes);
-    print(base64);
+    print(base64File);
     _photos.add(base64File);
 
     notifyListeners();
@@ -94,6 +96,15 @@ class FirebaseUserProvider with ChangeNotifier {
       // Handle any errors
       print('Error fetching user document: $e');
       throw e;
+    }
+  }
+
+  Future<void> fetchAllOrganizations() async {
+    try {
+      _organizationStream = firebaseService.getAllOrganizations();
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching all organizations: $e');
     }
   }
 }

@@ -38,11 +38,11 @@ class _DonorDashboardState extends State<DonorDashboard> {
         print("Current User ID: $firebaseUid");
 
         return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: ProjectColors().greenPrimary,
-            child: const Icon(Icons.add, color: Colors.white),
-            onPressed: () => Navigator.pushNamed(context, '/make_donation'),
-          ),
+          // floatingActionButton: FloatingActionButton(
+          //   backgroundColor: ProjectColors().greenPrimary,
+          //   child: const Icon(Icons.add, color: Colors.white),
+          //   onPressed: () => Navigator.pushNamed(context, '/make_donation'),
+          // ),
           body: FormBanner(
             actions: [
               IconButton(
@@ -67,6 +67,12 @@ class _DonorDashboardState extends State<DonorDashboard> {
                     'Donations made by the user',
                     style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/donor_organization_list');
+                  },
+                  child: Text('View Organizations'),
                 ),
                 Consumer<FirebaseUserProvider>(
                   builder: (context, userProvider, _) {
