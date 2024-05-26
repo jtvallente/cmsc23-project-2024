@@ -83,6 +83,22 @@ class _OrganizationDashboardState extends State<OrganizationDashboard> {
                   },
                   child: Text('Make Donation Drive'),
                 ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/donation_drives_list',
+                      arguments: authProvider.currentUser,
+                    );
+                  },
+                  child: Text('Donation Drives'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/scan_qr');
+                  },
+                  child: Text('Scan QR Code'),
+                ),
                 Consumer<FirebaseUserProvider>(
                   builder: (context, userProvider, _) {
                     return StreamBuilder<QuerySnapshot>(

@@ -127,6 +127,16 @@ class _MakeDonationDriveState extends State<MakeDonationDrive> {
         status: "Ongoing",
       );
 
+      print('Donation Drive Info:');
+      print('ID: ${newDonationDrive.donationDriveId}');
+      print('Name: ${newDonationDrive.name}');
+      print('Organization ID: ${newDonationDrive.organizationId}');
+      print('Description: ${newDonationDrive.description}');
+      print('Photos: ${newDonationDrive.photos}');
+      print('Date and Time: ${newDonationDrive.dateTime}');
+      print('Donations: ${newDonationDrive.donations}');
+      print('Status: ${newDonationDrive.status}');
+
       // Show the success dialog
       await showDialog(
         context: context,
@@ -145,7 +155,7 @@ class _MakeDonationDriveState extends State<MakeDonationDrive> {
               TextButton(
                 child: Text('Close'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pushNamed(context, '/organization_dashboard');
                 },
               ),
             ],

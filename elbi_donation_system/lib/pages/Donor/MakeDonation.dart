@@ -8,7 +8,6 @@ import 'package:elbi_donation_system/components/form_row_button.dart';
 import 'package:elbi_donation_system/components/form_segmented_button.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:elbi_donation_system/permission_handler.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 import 'package:elbi_donation_system/models/donation.dart';
@@ -156,6 +155,7 @@ class _MakeDonationState extends State<MakeDonation> {
         OrganizationId: _orgId!,
         category: _category.text,
         deliveryMethod: _deliveryMethod,
+        isAddedToDrive: false,
         weight: double.parse(_weight.text),
         photos: userProvider.photos,
         dateTime: _selectedDateTime ?? DateTime.now(),

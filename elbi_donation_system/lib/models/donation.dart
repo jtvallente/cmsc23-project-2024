@@ -4,6 +4,7 @@ class Donation {
   String OrganizationId;
   String category;
   String deliveryMethod;
+  bool isAddedToDrive;
   double weight;
   List<String>?
       photos; // Optional photos, represented as a list of base64 strings
@@ -19,6 +20,7 @@ class Donation {
     required this.OrganizationId,
     required this.category,
     required this.deliveryMethod,
+    required this.isAddedToDrive,
     required this.weight,
     this.photos,
     required this.dateTime,
@@ -36,6 +38,7 @@ class Donation {
       'OrganizationId': OrganizationId,
       'category': category,
       'deliveryMethod': deliveryMethod,
+      'isAddedToDrive': isAddedToDrive,
       'weight': weight,
       'photos': photos,
       'dateTime': dateTime.toIso8601String(),
@@ -53,6 +56,7 @@ class Donation {
       donorId: json['donorId'] ?? '',
       OrganizationId: json['OrganizationId'] ?? '',
       category: json['category'] ?? '',
+      isAddedToDrive: json['isAddedToDrive'] ?? '',
       deliveryMethod: json['deliveryMethod'] ?? '',
       weight: (json['weight'] ?? 0.0).toDouble(),
       photos:
@@ -64,7 +68,7 @@ class Donation {
           .toList(),
       contactNumber: json['contactNumber'] ?? '',
       status: json['status'] ?? '',
-      qrCode: json['qrCode'],
+      qrCode: json['qrCode'] ?? '',
     );
   }
 }

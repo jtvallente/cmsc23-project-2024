@@ -8,7 +8,7 @@ import 'package:elbi_donation_system/models/donationdrive.dart';
 class FirebaseUserAPI {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  //get all orgs that are approved
+  // Get all orgs that are approved
   Stream<QuerySnapshot> getAllOrganizations() {
     return firestore
         .collection('users')
@@ -97,6 +97,40 @@ class FirebaseUserAPI {
         .snapshots();
   }
 
+  Future<List<DonationDrive>> getDonationDrivesForUser(
+      String organizationId) async {
+    try {
+      QuerySnapshot querySnapshot = await firestore
+          .collection('donationDrive')
+          .where('organizationId', isEqualTo: organizationId)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        print("No donation drives found for organization $organizationId");
+        return [];
+      }
+
+      List<DonationDrive> drives = [];
+      for (var doc in querySnapshot.docs) {
+        try {
+          Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+          if (data == null) {
+            print("Document data is null for document ID ${doc.id}");
+            continue; // Skip this document
+          }
+          drives.add(DonationDrive.fromJson(data));
+        } catch (e) {
+          print("Error parsing document ID ${doc.id}: $e");
+        }
+      }
+
+      return drives;
+    } catch (e) {
+      print('Error fetching donation drives: $e');
+      throw Exception('Failed to fetch donation drives: $e');
+    }
+  }
+
   Future<void> addDonationDrive(DonationDrive donationDrive) async {
     try {
       await firestore
@@ -108,16 +142,31 @@ class FirebaseUserAPI {
     }
   }
 
-  Future<void> updateDonationDrive(String donationDriveId) async {
+  Future<void> addDonationToDrive(Donation donation, String driveId) async {
     try {
-      // Get a reference to the user document in Firestore
-      DocumentReference userRef =
-          firestore.collection('donationDrive').doc(donationDriveId);
-      // Update the isApproved attribute to true
-      await userRef
-          .update({'status': "completed"}); // Assume ongoing by default
+      // Update donation to mark it as added to a drive
+      await firestore
+          .collection('donation')
+          .doc(donation.donationId)
+          .update({'isAddedToDrive': true, 'driveId': driveId});
+
+      // Add the donation to the specified drive
+      await firestore.collection('donationDrive').doc(driveId).update({
+        'donations': FieldValue.arrayUnion([donation.toJson()])
+      });
     } catch (e) {
-      throw Exception('Failed to change donation drive status: $e');
+      throw Exception('Failed to add donation to drive: $e');
+    }
+  }
+
+  Future<void> updateDonationDrive(DonationDrive donationDrive) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('donationDrive')
+          .doc(donationDrive.donationDriveId)
+          .update(donationDrive.toJson());
+    } catch (e) {
+      print("Error updating donation drive: $e");
     }
   }
 
@@ -126,6 +175,20 @@ class FirebaseUserAPI {
       await firestore.collection('donationDrive').doc(uid).delete();
     } catch (e) {
       throw Exception('Failed to delete donation drive: $e');
+    }
+  }
+
+  Future<void> updateByQr(String donationId) async {
+    try {
+      // Get the reference to the document
+      DocumentReference docRef =
+          firestore.collection('donation').doc(donationId);
+
+      // Update the status field
+      await docRef.update({'status': 'Completed/Received'});
+    } catch (e) {
+      print("Error updating donation: $e");
+      throw e;
     }
   }
 }

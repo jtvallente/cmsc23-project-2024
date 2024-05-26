@@ -6,6 +6,7 @@
     <application
         android:label="elbi_donation_system"
         android:name="${applicationName}"
+        
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

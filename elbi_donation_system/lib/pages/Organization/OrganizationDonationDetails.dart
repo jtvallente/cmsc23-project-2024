@@ -2,7 +2,8 @@ import 'dart:convert'; // Import to decode base64 images
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Import provider
 import 'package:elbi_donation_system/models/donation.dart'; // Import the Donation model
-import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart'; // Import the provider
+import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
+import 'package:elbi_donation_system/models/donationdrive.dart'; // Import the Donation model
 
 class OrganizationDonationDetails extends StatefulWidget {
   @override
@@ -12,10 +13,13 @@ class OrganizationDonationDetails extends StatefulWidget {
 
 class _OrganizationDonationDetailsState
     extends State<OrganizationDonationDetails> {
+  String? _selectedDriveId;
+
   @override
   Widget build(BuildContext context) {
     final Donation donation =
         ModalRoute.of(context)!.settings.arguments as Donation;
+    final provider = Provider.of<FirebaseUserProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -71,7 +75,7 @@ class _OrganizationDonationDetailsState
                 'Pending',
                 'Confirmed',
                 'Scheduled for pick up',
-                'Complete',
+                'Completed/ReceiveQd',
                 'Cancelled'
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -127,6 +131,81 @@ class _OrganizationDonationDetailsState
                 ),
               ),
             ],
+            SizedBox(height: 16),
+            if (!donation.isAddedToDrive) // Add this block
+              ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return FutureBuilder<void>(
+                        future: provider
+                            .fetchAllDonationDrives(donation.OrganizationId),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else {
+                            return Consumer<FirebaseUserProvider>(
+                              builder: (context, provider, child) {
+                                return Column(
+                                  children: [
+                                    Text(
+                                      'Select a Donation Drive',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Expanded(
+                                      child: ListView.builder(
+                                        itemCount:
+                                            provider.userDonationDrives.length,
+                                        itemBuilder: (context, index) {
+                                          DonationDrive drive = provider
+                                              .userDonationDrives[index];
+                                          return RadioListTile<String>(
+                                            title: Text(drive.name),
+                                            value: drive.donationDriveId,
+                                            groupValue: _selectedDriveId,
+                                            onChanged: (String? value) {
+                                              setState(() {
+                                                _selectedDriveId = value;
+                                              });
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: _selectedDriveId == null
+                                          ? null
+                                          : () async {
+                                              await provider.addDonationToDrive(
+                                                  donation, _selectedDriveId!);
+                                              Navigator.pop(context);
+                                              setState(() {
+                                                donation.isAddedToDrive = true;
+                                              });
+                                            },
+                                      child: Text('Add to Drive'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                      );
+                    },
+                  );
+                },
+                child: Text('Add to Donation Drive'),
+              ),
+            if (donation.isAddedToDrive) // Add this block
+              Text('This donation has been added to a drive'),
           ],
         ),
       ),

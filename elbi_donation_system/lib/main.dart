@@ -31,6 +31,7 @@ import 'pages/Organization/MakeDonationDrive.dart';
 import 'pages/Organization/OrganizationDashboard.dart';
 import 'pages/Organization/OrganizationDonationDetails.dart';
 import 'pages/Organization/OrganizationProfile.dart';
+import 'pages/Organization/QRCodeSnannerPage.dart';
 
 //USER PAGES IMPORT
 import 'pages/Donor/DonorDashboard.dart';
@@ -94,6 +95,7 @@ class MyApp extends StatelessWidget {
         '/organization_donation_details': (context) =>
             OrganizationDonationDetails(),
         '/organization_profile': (context) => OrganizationProfile(),
+        '/scan_qr': (context) => QRCodeScannerPage(),
 
         // Donor routes
         '/donor_dashboard': (context) => DonorDashboard(),

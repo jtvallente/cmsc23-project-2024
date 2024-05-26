@@ -31,22 +31,24 @@ class DonationDrive {
       'photos': photos,
       'donations': donations.map((donation) => donation.toJson()).toList(),
       'status': status,
-      'dateTime': dateTime,
+      'dateTime': dateTime.toIso8601String(),
     };
   }
 
   // Create a DonationDrive object from a Map
   factory DonationDrive.fromJson(Map<String, dynamic> json) {
     return DonationDrive(
-        donationDriveId: json['donationDriveId'] as String,
-        name: json['name'] as String,
-        description: json['description'] as String,
-        organizationId: json['organizationId'] as String,
-        photos: List<String>.from(json['photos'] as List<dynamic>),
-        donations: (json['donations'] as List<dynamic>)
-            .map((item) => Donation.fromJson(item as Map<String, dynamic>))
-            .toList(),
-        status: json['status'] as String,
-        dateTime: json['dateTime'] as DateTime);
+      donationDriveId: json['donationDriveId'] as String,
+      name: json['name'] as String,
+      description: json['description'] as String,
+      organizationId: json['organizationId'] as String,
+      photos: List<String>.from(json['photos'] as List<dynamic>),
+      donations: (json['donations'] as List<dynamic>)
+          .map((item) => Donation.fromJson(item as Map<String, dynamic>))
+          .toList(),
+      status: json['status'] as String,
+      dateTime:
+          DateTime.parse(json['dateTime'] ?? DateTime.now().toIso8601String()),
+    );
   }
 }
