@@ -58,4 +58,15 @@ class FirebaseUserAPI {
       throw Exception('Failed to fetch donations: $e');
     }
   }
+
+  Future<void> updateDonation(Donation donation) async {
+    try {
+      await firestore
+          .collection('donation')
+          .doc(donation.donationId)
+          .update(donation.toJson());
+    } catch (e) {
+      throw Exception('Failed to update donation: $e');
+    }
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
+import 'package:elbi_donation_system/models/donation.dart'; // Import Donation model
 
 class DonorDashboard extends StatefulWidget {
   @override
@@ -38,11 +39,6 @@ class _DonorDashboardState extends State<DonorDashboard> {
         print("Current User ID: $firebaseUid");
 
         return Scaffold(
-          // floatingActionButton: FloatingActionButton(
-          //   backgroundColor: ProjectColors().greenPrimary,
-          //   child: const Icon(Icons.add, color: Colors.white),
-          //   onPressed: () => Navigator.pushNamed(context, '/make_donation'),
-          // ),
           body: FormBanner(
             actions: [
               IconButton(
@@ -98,6 +94,16 @@ class _DonorDashboardState extends State<DonorDashboard> {
                             return ListTile(
                               title: Text(donation.donationId),
                               subtitle: Text('Donor ID: ${donation.donorId}'),
+                              trailing: TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/donor_donation_details',
+                                    arguments: donation,
+                                  );
+                                },
+                                child: Text('View'),
+                              ),
                             );
                           }).toList(),
                         );

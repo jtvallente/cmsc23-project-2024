@@ -100,9 +100,20 @@ class _UserSignInPageState extends State<UserSignInPage> {
 
                                   if (user != null) {
                                     bool isOrganization = user.isOrganization;
+
                                     if (isOrganization) {
-                                      Navigator.pushReplacementNamed(
-                                          context, '/organization_dashboard');
+                                      if (user.isApproved) {
+                                        Navigator.pushReplacementNamed(
+                                            context, '/organization_dashboard');
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Please wait for the Admin to approve your account creation.'),
+                                          ),
+                                        );
+                                      }
                                     } else {
                                       Navigator.pushReplacementNamed(
                                           context, '/donor_dashboard');

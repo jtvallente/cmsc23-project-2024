@@ -107,4 +107,14 @@ class FirebaseUserProvider with ChangeNotifier {
       print('Error fetching all organizations: $e');
     }
   }
+
+  // Update a donation
+  Future<void> updateDonation(Donation donation) async {
+    try {
+      await firebaseService.updateDonation(donation);
+      notifyListeners();
+    } catch (e) {
+      print("Error updating donation: $e");
+    }
+  }
 }

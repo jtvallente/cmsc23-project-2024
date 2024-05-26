@@ -280,7 +280,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                           await userAuth.register(email, password, userData);
 
                           Navigator.pushReplacementNamed(
-                              context, '/donor_dashboard');
+                              context, '/user_signin');
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

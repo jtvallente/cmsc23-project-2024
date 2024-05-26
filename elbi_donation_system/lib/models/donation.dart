@@ -28,11 +28,12 @@ class Donation {
     this.qrCode,
   });
 
+  // Convert Donation object to JSON
   Map<String, dynamic> toJson() {
     return {
       'donationId': donationId,
       'donorId': donorId,
-      'organizationId': OrganizationId,
+      'OrganizationId': OrganizationId,
       'category': category,
       'deliveryMethod': deliveryMethod,
       'weight': weight,
@@ -45,20 +46,22 @@ class Donation {
     };
   }
 
-  static Donation fromJson(Map<String, dynamic> json) {
+  // Convert JSON to Donation object
+  factory Donation.fromJson(Map<String, dynamic> json) {
     return Donation(
       donationId: json['donationId'] ?? '',
       donorId: json['donorId'] ?? '',
-      OrganizationId: json['organizationId'],
+      OrganizationId: json['organizationId'] ?? '',
       category: json['category'] ?? '',
       deliveryMethod: json['deliveryMethod'] ?? '',
-      weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
-      photos: json['photos'] != null ? List<String>.from(json['photos']) : null,
+      weight: (json['weight'] ?? 0.0).toDouble(),
+      photos:
+          (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList(),
       dateTime:
           DateTime.parse(json['dateTime'] ?? DateTime.now().toIso8601String()),
-      addresses: json['addresses'] != null
-          ? List<String>.from(json['addresses'])
-          : null,
+      addresses: (json['addresses'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       contactNumber: json['contactNumber'] ?? '',
       status: json['status'] ?? '',
       qrCode: json['qrCode'],
