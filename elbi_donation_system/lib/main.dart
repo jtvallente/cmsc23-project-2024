@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       // routes
       routes: {
-        '/': (context) => WelcomePage(),
+        '/': (context) => AdminDashboard(),
         '/admin_signin': (context) => AdminSignInPage(),
         '/user_signin': (context) => UserSignInPage(),
         '/user_signup': (context) => UserSignUpPage(),
