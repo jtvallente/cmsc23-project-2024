@@ -16,51 +16,43 @@ class _DonorsListPageState extends State<DonorsListPage> {
         .where('isApproved', isEqualTo: false)
         .snapshots();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Donors List'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder(
-              stream: donorsStream,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Error encountered! ${snapshot.error}"),
-                  );
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(
-                    child: Text("No Donors Found"),
-                  );
-                }
+    return Container(
+      height: MediaQuery.of(context).size.height / 2,
+      padding: const EdgeInsets.all(15.0),
+      child: StreamBuilder(
+        stream: donorsStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error encountered! ${snapshot.error}"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text("No Donors Found"),
+            );
+          }
 
-                List<User> donors = [];
-                snapshot.data!.docs.forEach((doc) {
-                  User user = User.fromJson(doc.data() as Map<String, dynamic>);
-                  user.userId = doc.id;
-                  donors.add(user);
-                });
+          List<User> donors = [];
+          snapshot.data!.docs.forEach((doc) {
+            User user = User.fromJson(doc.data() as Map<String, dynamic>);
+            user.userId = doc.id;
+            donors.add(user);
+          });
 
-                return ListView.builder(
-                  itemCount: donors.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(donors[index].name),
-                      leading: Text(donors[index].username),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+          return ListView.builder(
+            itemCount: donors.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(donors[index].name),
+                leading: Text(donors[index].username),
+              );
+            },
+          );
+        },
       ),
     );
   }

@@ -10,11 +10,10 @@ class AdminDonations extends StatelessWidget {
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> donationsStream =
         context.watch<FirebaseAdminProvider>().donationsStream;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('All Donations'),
-      ),
-      body: StreamBuilder(
+    return Container(
+      height: MediaQuery.of(context).size.height / 2,
+      padding: const EdgeInsets.all(15.0),
+      child: StreamBuilder(
         stream: donationsStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
