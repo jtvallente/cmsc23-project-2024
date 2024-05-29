@@ -12,7 +12,7 @@ class AdminSignInPage extends StatefulWidget {
 }
 
 class _AdminSignInPageState extends State<AdminSignInPage> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -45,9 +45,9 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                         FormTextField(
                           isNum: false,
                           isPassword: false,
-                          label: "Email",
-                          controller: _emailController,
-                          inputType: TextInputType.emailAddress,
+                          label: "Username",
+                          controller: _usernameController,
+                          inputType: TextInputType.text,
                         ),
                         FormTextField(
                           isNum: false,
@@ -66,13 +66,13 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                           gradient: ProjectColors().greenPrimaryGradient,
                           onTap: () async {
                             if (_formKey.currentState?.validate() ?? false) {
-                              String email = _emailController.text;
+                              String username = _usernameController.text;
                               String password = _passwordController.text;
 
                               try {
                                 bool success = await context
                                     .read<FirebaseAuthAdminProvider>()
-                                    .login(email, password);
+                                    .login(username, password);
 
                                 if (success) {
                                   Navigator.pushReplacementNamed(
@@ -101,7 +101,44 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                             }
                           },
                           fillWidth: true,
-                        )
+                        ),
+                        SizedBox(height: 16.0),
+                        PrimaryButton(
+                          label: "Sign-in with Google",
+                          gradient: ProjectColors().bluePrimaryGradient,
+                          onTap: () async {
+                            try {
+                              bool success = await context
+                                  .read<FirebaseAuthAdminProvider>()
+                                  .signInWithGoogle();
+
+                              if (success) {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  '/admin_dashboard',
+                                  arguments: context
+                                      .read<FirebaseAuthAdminProvider>()
+                                      .currentAdmin,
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Google Sign-in failed. Please try again.'),
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Google Sign-in failed. Please try again.'),
+                                ),
+                              );
+                            }
+                          },
+                          fillWidth: true,
+                        ),
                       ],
                     ),
                   ],
