@@ -27,60 +27,7 @@ class _StreamListTileState extends State<StreamListTile> {
       surfaceTintColor: widget.color,
       child: ListTile(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => Dialog(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(height: 500, child: widget.modal
-
-                      // child: Column(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Column(
-                      //       children: [
-                      //         Text(organizations[index].name),
-                      //         Text(organizations[index].description),
-                      //         organizations[index]
-                      //                 .proofOfLegitimacyBase64
-                      //                 .isNotEmpty
-                      //             ? SingleChildScrollView(
-                      //                 child: ListView.builder(
-                      //                 shrinkWrap: true,
-                      //                 itemCount: organizations.length,
-                      //                 itemBuilder: (context, i) {
-                      //                   return Card(
-                      //                     child: ListTile(
-                      //                         leading: Icon(Icons.file_copy),
-                      //                         title: Text(
-                      //                             "Proof of Legitimacy ${index + 1}"),
-                      //                         onTap: () => openFileFromBase64String(
-                      //                             organizations[index]
-                      //                                     .proofOfLegitimacyBase64[
-                      //                                 i])),
-                      //                   );
-                      //                 },
-                      //               ))
-                      //             : Text("No proof of legitimacy uploaded"),
-                      //       ],
-                      //     ),
-                      //     PrimaryButton(
-                      //         label: "Approve",
-                      //         onTap: () {
-                      //           // Update the user's isApproved attribute to true
-                      //           context
-                      //               .read<FirebaseAdminProvider>()
-                      //               .approveUser(organizations[index].userId);
-                      //           Navigator.pop(context);
-                      //         },
-                      //         gradient: ProjectColors().greenPrimaryGradient,
-                      //         fillWidth: true)
-                      //   ],
-                      // ),
-                      ),
-                ),
-              ),
-            );
+            showDialog(context: context, builder: (context) => widget.modal);
           },
           title: widget.title,
           leading: widget.leading,
