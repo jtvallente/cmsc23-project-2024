@@ -35,17 +35,30 @@ class _AdminDashboardState extends State<AdminDashboard> {
     });
   }
 
-  List<Widget> adminPages = [
-    AdminPendingOrgsPage(),
-    OrganizationsListPage(),
-    DonorsListPage(),
-    AdminDonations()
-  ];
-
   @override
   Widget build(BuildContext context) {
     //final Admin adminData = ModalRoute.of(context)?.settings.arguments as Admin;
+    Stream<QuerySnapshot> usersStream =
+        context.watch<FirebaseAdminProvider>().users;
+    Stream<QuerySnapshot> organizationsStream = FirebaseFirestore.instance
+        .collection('users')
+        .where('isOrganization', isEqualTo: true)
+        .where('isApproved', isEqualTo: true)
+        .snapshots();
+    Stream<QuerySnapshot> donorsStream = FirebaseFirestore.instance
+        .collection('users')
+        .where('isOrganization', isEqualTo: false)
+        .where('isApproved', isEqualTo: false)
+        .snapshots();
+    Stream<QuerySnapshot> donationsStream =
+        context.watch<FirebaseAdminProvider>().donationsStream;
 
+    List<Widget> adminPages = [
+      AdminPendingOrgsPage(usersStream: usersStream),
+      OrganizationsListPage(organizationsStream: organizationsStream),
+      DonorsListPage(donorsStream: donorsStream),
+      AdminDonations(donationsStream: donationsStream)
+    ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

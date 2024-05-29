@@ -13,7 +13,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class AdminPendingOrgsPage extends StatefulWidget {
-  const AdminPendingOrgsPage({super.key});
+  final Stream<QuerySnapshot> usersStream;
+  const AdminPendingOrgsPage({required this.usersStream, super.key});
 
   @override
   State<AdminPendingOrgsPage> createState() => _AdminPendingOrgsPageState();
@@ -52,10 +53,8 @@ class _AdminPendingOrgsPageState extends State<AdminPendingOrgsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> usersStream =
-        context.watch<FirebaseAdminProvider>().users;
     return StreamBuilder(
-      stream: usersStream,
+      stream: widget.usersStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(

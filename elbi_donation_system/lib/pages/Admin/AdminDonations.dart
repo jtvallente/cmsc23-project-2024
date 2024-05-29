@@ -6,10 +6,10 @@ import 'package:elbi_donation_system/models/Admin.dart';
 import 'package:provider/provider.dart'; // Adjust the import path accordingly
 
 class AdminDonations extends StatelessWidget {
+  final Stream<QuerySnapshot> donationsStream;
+  const AdminDonations({required this.donationsStream, super.key});
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> donationsStream =
-        context.watch<FirebaseAdminProvider>().donationsStream;
     return Container(
       height: MediaQuery.of(context).size.height / 2,
       padding: const EdgeInsets.all(15.0),

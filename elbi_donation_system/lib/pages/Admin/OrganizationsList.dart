@@ -5,6 +5,9 @@ import 'package:elbi_donation_system/providers/FirebaseAdminProvider.dart';
 import 'package:provider/provider.dart';
 
 class OrganizationsListPage extends StatefulWidget {
+  final Stream<QuerySnapshot> organizationsStream;
+  const OrganizationsListPage({required this.organizationsStream, super.key});
+
   @override
   _OrganizationsListPageState createState() => _OrganizationsListPageState();
 }
@@ -12,17 +15,11 @@ class OrganizationsListPage extends StatefulWidget {
 class _OrganizationsListPageState extends State<OrganizationsListPage> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> organizationsStream = FirebaseFirestore.instance
-        .collection('users')
-        .where('isOrganization', isEqualTo: true)
-        .where('isApproved', isEqualTo: true)
-        .snapshots();
-
     return Container(
       height: MediaQuery.of(context).size.height / 2,
       padding: const EdgeInsets.all(15.0),
       child: StreamBuilder(
-        stream: organizationsStream,
+        stream: widget.organizationsStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
