@@ -75,7 +75,7 @@ class _OrganizationDonationDetailsState
                 'Pending',
                 'Confirmed',
                 'Scheduled for pick up',
-                'Completed/ReceiveQd',
+                'Completed/Received',
                 'Cancelled'
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -87,8 +87,6 @@ class _OrganizationDonationDetailsState
                 setState(() {
                   donation.status = newValue!;
                 });
-                final provider =
-                    Provider.of<FirebaseUserProvider>(context, listen: false);
                 provider.updateDonation(donation);
               },
             ),
@@ -132,7 +130,7 @@ class _OrganizationDonationDetailsState
               ),
             ],
             SizedBox(height: 16),
-            if (!donation.isAddedToDrive) // Add this block
+            if (!donation.isAddedToDrive)
               ElevatedButton(
                 onPressed: () {
                   showModalBottomSheet(
@@ -151,48 +149,55 @@ class _OrganizationDonationDetailsState
                           } else {
                             return Consumer<FirebaseUserProvider>(
                               builder: (context, provider, child) {
-                                return Column(
-                                  children: [
-                                    Text(
-                                      'Select a Donation Drive',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount:
-                                            provider.userDonationDrives.length,
-                                        itemBuilder: (context, index) {
-                                          DonationDrive drive = provider
-                                              .userDonationDrives[index];
-                                          return RadioListTile<String>(
-                                            title: Text(drive.name),
-                                            value: drive.donationDriveId,
-                                            groupValue: _selectedDriveId,
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                _selectedDriveId = value;
-                                              });
+                                return StatefulBuilder(
+                                  builder: (context, setModalState) {
+                                    return Column(
+                                      children: [
+                                        Text(
+                                          'Select a Donation Drive',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: provider
+                                                .userDonationDrives.length,
+                                            itemBuilder: (context, index) {
+                                              DonationDrive drive = provider
+                                                  .userDonationDrives[index];
+                                              return RadioListTile<String>(
+                                                title: Text(drive.name),
+                                                value: drive.donationDriveId,
+                                                groupValue: _selectedDriveId,
+                                                onChanged: (String? value) {
+                                                  setModalState(() {
+                                                    _selectedDriveId = value;
+                                                  });
+                                                },
+                                              );
                                             },
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: _selectedDriveId == null
-                                          ? null
-                                          : () async {
-                                              await provider.addDonationToDrive(
-                                                  donation, _selectedDriveId!);
-                                              Navigator.pop(context);
-                                              setState(() {
-                                                donation.isAddedToDrive = true;
-                                              });
-                                            },
-                                      child: Text('Add to Drive'),
-                                    ),
-                                  ],
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: _selectedDriveId == null
+                                              ? null
+                                              : () async {
+                                                  await provider
+                                                      .addDonationToDrive(
+                                                          donation,
+                                                          _selectedDriveId!);
+                                                  Navigator.pop(context);
+                                                  setState(() {
+                                                    donation.isAddedToDrive =
+                                                        true;
+                                                  });
+                                                },
+                                          child: Text('Add to Drive'),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 );
                               },
                             );
@@ -204,7 +209,7 @@ class _OrganizationDonationDetailsState
                 },
                 child: Text('Add to Donation Drive'),
               ),
-            if (donation.isAddedToDrive) // Add this block
+            if (donation.isAddedToDrive)
               Text('This donation has been added to a drive'),
           ],
         ),

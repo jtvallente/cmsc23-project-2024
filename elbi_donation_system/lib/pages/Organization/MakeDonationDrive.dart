@@ -137,6 +137,8 @@ class _MakeDonationDriveState extends State<MakeDonationDrive> {
       print('Donations: ${newDonationDrive.donations}');
       print('Status: ${newDonationDrive.status}');
 
+      await userProvider.createDonationDrive(newDonationDrive);
+
       // Show the success dialog
       await showDialog(
         context: context,
@@ -164,7 +166,6 @@ class _MakeDonationDriveState extends State<MakeDonationDrive> {
       );
 
       // Call the provider's createDonation method
-      await userProvider.createDonationDrive(newDonationDrive);
     }
   }
 
