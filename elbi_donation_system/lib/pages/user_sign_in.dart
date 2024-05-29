@@ -46,7 +46,7 @@ class _UserSignInPageState extends State<UserSignInPage> {
                         FormTextField(
                           isNum: false,
                           isPassword: false,
-                          label: "Email",
+                          label: "Email or Username",
                           controller: _emailController,
                           inputType: TextInputType.emailAddress,
                         ),
@@ -130,7 +130,7 @@ class _UserSignInPageState extends State<UserSignInPage> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'Sign-in failed. Please check your credentials.'),
+                                          'Sign-in failed. Please check your credentials or try Google Sign-in instead..'),
                                     ),
                                   );
                                 }
@@ -138,10 +138,71 @@ class _UserSignInPageState extends State<UserSignInPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                        'Sign-in failed. Please check your credentials.'),
+                                        'Sign-in failed. Please check your credentials or try Google Sign-in instead.'),
                                   ),
                                 );
                               }
+                            }
+                          },
+                          fillWidth: true,
+                        ),
+                        const SizedBox(height: 10),
+                        PrimaryButton(
+                          label: "Sign-in with Google",
+                          gradient: ProjectColors().greenPrimaryGradient,
+                          onTap: () async {
+                            try {
+                              bool success = await context
+                                  .read<FirebaseAuthUserProvider>()
+                                  .signInWithGoogle();
+                              if (success) {
+                                var userProvider =
+                                    context.read<FirebaseAuthUserProvider>();
+                                var user = userProvider.currentUser;
+
+                                if (user != null) {
+                                  bool isOrganization = user.isOrganization;
+
+                                  if (isOrganization) {
+                                    if (user.isApproved) {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/organization_dashboard');
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Please wait for the Admin to approve your account creation.'),
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    Navigator.pushReplacementNamed(
+                                        context, '/donor_dashboard');
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text('Failed to retrieve user data.'),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Sign-in with Google failed. Please try again.'),
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Sign-in with Google failed. Please try again.'),
+                                ),
+                              );
                             }
                           },
                           fillWidth: true,

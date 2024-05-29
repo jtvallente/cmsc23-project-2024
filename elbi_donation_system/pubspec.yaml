@@ -41,6 +41,8 @@ dependencies:
   qr_flutter: ^4.0.0
   image: ^3.0.1
   qr_code_scanner: ^1.0.1
+  google_sign_in: ^6.2.1
+  email_validator: ^2.1.17
   
 
 
