@@ -38,6 +38,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   @override
   Widget build(BuildContext context) {
     //final Admin adminData = ModalRoute.of(context)?.settings.arguments as Admin;
+
     Stream<QuerySnapshot> usersStream =
         context.watch<FirebaseAdminProvider>().users;
     Stream<QuerySnapshot> organizationsStream = FirebaseFirestore.instance
@@ -59,6 +60,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
       DonorsListPage(donorsStream: donorsStream),
       AdminDonations(donationsStream: donationsStream)
     ];
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

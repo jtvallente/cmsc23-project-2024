@@ -79,9 +79,6 @@ class MyApp extends StatelessWidget {
         '/admin_dashboard': (context) => AdminDashboard(),
         '/admin_donor_details': (context) => AdminDonorDetails(),
         '/admin_org_details': (context) => AdminOrgDetails(),
-        '/organizations_list': (context) => OrganizationsListPage(),
-        '/donors_list': (context) => DonorsListPage(),
-        '/donations_list': (context) => AdminDonations(),
 
         // Organization routes
         '/organization_dashboard': (context) => OrganizationDashboard(),

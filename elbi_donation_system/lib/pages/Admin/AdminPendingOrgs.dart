@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_system/components/PrimaryButton.dart';
+import 'package:elbi_donation_system/components/stream_list_tile.dart';
 import 'package:elbi_donation_system/models/users.dart';
 import 'package:elbi_donation_system/providers/FirebaseAdminProvider.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
@@ -111,81 +112,83 @@ class _AdminPendingOrgsPageState extends State<AdminPendingOrgsPage> {
                     shrinkWrap: true,
                     itemCount: organizations.length,
                     itemBuilder: (context, index) {
-                      return Card(
-                        elevation: 1,
-                        surfaceTintColor: ProjectColors().yellowPrimary,
-                        child: ListTile(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      height: 500,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text(organizations[index].name),
-                                              Text(organizations[index]
-                                                  .description),
-                                              organizations[index]
-                                                      .proofOfLegitimacyBase64
-                                                      .isNotEmpty
-                                                  ? SingleChildScrollView(
-                                                      child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemCount:
-                                                          organizations.length,
-                                                      itemBuilder:
-                                                          (context, i) {
-                                                        return Card(
-                                                          child: ListTile(
-                                                              leading: Icon(Icons
-                                                                  .file_copy),
-                                                              title: Text(
-                                                                  "Proof of Legitimacy ${index + 1}"),
-                                                              onTap: () => openFileFromBase64String(
-                                                                  organizations[
-                                                                          index]
-                                                                      .proofOfLegitimacyBase64[i])),
-                                                        );
-                                                      },
-                                                    ))
-                                                  : Text(
-                                                      "No proof of legitimacy uploaded"),
-                                            ],
-                                          ),
-                                          PrimaryButton(
-                                              label: "Approve",
-                                              onTap: () {
-                                                // Update the user's isApproved attribute to true
-                                                context
-                                                    .read<
-                                                        FirebaseAdminProvider>()
-                                                    .approveUser(
-                                                        organizations[index]
-                                                            .userId);
-                                              },
-                                              gradient: ProjectColors()
-                                                  .greenPrimaryGradient,
-                                              fillWidth: true)
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            title: Text(organizations[index].name),
-                            leading: Icon(Icons.groups_2_sharp),
-                            trailing: Text(organizations[index].isApproved
-                                ? "approved"
-                                : "For Review")),
-                      );
+                      return StreamListTile(
+                          color: ProjectColors().yellowPrimary,
+                          modal: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(organizations[index].name),
+                                  Text(organizations[index].description),
+                                  organizations[index]
+                                          .proofOfLegitimacyBase64
+                                          .isNotEmpty
+                                      ? SingleChildScrollView(
+                                          child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: organizations.length,
+                                          itemBuilder: (context, i) {
+                                            return Card(
+                                              child: ListTile(
+                                                  leading:
+                                                      Icon(Icons.file_copy),
+                                                  title: Text(
+                                                      "Proof of Legitimacy ${index + 1}"),
+                                                  onTap: () =>
+                                                      openFileFromBase64String(
+                                                          organizations[index]
+                                                                  .proofOfLegitimacyBase64[
+                                                              i])),
+                                            );
+                                          },
+                                        ))
+                                      : Text("No proof of legitimacy uploaded"),
+                                ],
+                              ),
+                              PrimaryButton(
+                                  label: "Approve",
+                                  onTap: () {
+                                    // Update the user's isApproved attribute to true
+                                    context
+                                        .read<FirebaseAdminProvider>()
+                                        .approveUser(
+                                            organizations[index].userId);
+                                    Navigator.pop(context);
+                                  },
+                                  gradient:
+                                      ProjectColors().greenPrimaryGradient,
+                                  fillWidth: true)
+                            ],
+                          ),
+                          leading: Text(organizations[index].isApproved
+                              ? "approved"
+                              : "For Review"),
+                          title: Text(organizations[index].name),
+                          trailing: Icon(Icons.groups_2_sharp));
+
+                      // Card(
+                      //   elevation: 1,
+                      //   surfaceTintColor: ProjectColors().yellowPrimary,
+                      //   child: ListTile(
+                      //       onTap: () {
+                      //         showDialog(
+                      //           context: context,
+                      //           builder: (context) => Dialog(
+                      //             child: Padding(
+                      //               padding: const EdgeInsets.all(8.0),
+                      //               child: SizedBox(
+                      //                 height: 500,
+                      //                 child:
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         );
+                      //       },
+                      //       title: ,
+                      //       leading: ,
+                      //       trailing: ),
+                      // );
                     },
                   ),
                 ),
