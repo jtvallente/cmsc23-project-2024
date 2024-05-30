@@ -21,7 +21,6 @@ class MakeDonation extends StatefulWidget {
 }
 
 class _MakeDonationState extends State<MakeDonation> {
-  final TextEditingController _category = TextEditingController();
   final TextEditingController _weight = TextEditingController();
   final TextEditingController _address1 = TextEditingController();
   final TextEditingController _address2 = TextEditingController();
@@ -35,7 +34,7 @@ class _MakeDonationState extends State<MakeDonation> {
 
   DateTime? _selectedDateTime;
   String _deliveryMethod = "Pickup"; // Default to "Pickup"
-
+  String _category = "";
   String? _orgId;
 
   @override
@@ -153,7 +152,7 @@ class _MakeDonationState extends State<MakeDonation> {
         donationId: id,
         donorId: userId,
         OrganizationId: _orgId!,
-        category: _category.text,
+        category: _category,
         deliveryMethod: _deliveryMethod,
         isAddedToDrive: false,
         weight: double.parse(_weight.text),
@@ -233,12 +232,20 @@ class _MakeDonationState extends State<MakeDonation> {
                 children: [
                   Column(
                     children: [
-                      FormTextField(
-                        isNum: false,
-                        isPassword: false,
-                        label: "Category",
-                        controller: _category,
-                        inputType: TextInputType.name,
+                      DropdownMenu(
+                        label: const Text('Category'),
+                        onSelected: (value) {
+                          setState(() {
+                            _category = value!;
+                          });
+                        },
+                        dropdownMenuEntries: const <DropdownMenuEntry<String>>[
+                          DropdownMenuEntry(value: 'Food', label: 'Food'),
+                          DropdownMenuEntry(value: 'Clothes', label: 'Clothes'),
+                          DropdownMenuEntry(value: 'Cash', label: 'Cash'),
+                          DropdownMenuEntry(value: 'Necessities', label: 'Necessities'),
+                          DropdownMenuEntry(value: 'Other', label: 'Other'),
+                        ]
                       ),
                       FormSegmentedButton(
                         label: "Delivery Method",
