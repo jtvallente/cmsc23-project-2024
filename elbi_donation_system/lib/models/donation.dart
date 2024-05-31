@@ -1,12 +1,13 @@
 class Donation {
   String donationId;
   String donorId; // Foreign Key to the User who made the donation
-  String organizationId;
+  String OrganizationId;
   String category;
   String deliveryMethod;
   bool isAddedToDrive;
   double weight;
-  List<String>? photos; // Optional photos, represented as a list of base64 strings
+  List<String>?
+      photos; // Optional photos, represented as a list of base64 strings
   DateTime dateTime;
   List<String>? addresses; // Optional addresses for pickup
   String contactNumber; // Contact number of the donor
@@ -16,7 +17,7 @@ class Donation {
   Donation({
     required this.donationId,
     required this.donorId,
-    required this.organizationId,
+    required this.OrganizationId,
     required this.category,
     required this.deliveryMethod,
     required this.isAddedToDrive,
@@ -34,7 +35,7 @@ class Donation {
     return {
       'donationId': donationId,
       'donorId': donorId,
-      'organizationId': organizationId,
+      'OrganizationId': OrganizationId,
       'category': category,
       'deliveryMethod': deliveryMethod,
       'isAddedToDrive': isAddedToDrive,
@@ -53,14 +54,18 @@ class Donation {
     return Donation(
       donationId: json['donationId'] ?? '',
       donorId: json['donorId'] ?? '',
-      organizationId: json['organizationId'] ?? '',
+      OrganizationId: json['OrganizationId'] ?? '',
       category: json['category'] ?? '',
       deliveryMethod: json['deliveryMethod'] ?? '',
       isAddedToDrive: json['isAddedToDrive'] ?? false,
       weight: (json['weight'] ?? 0.0).toDouble(),
-      photos: (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      dateTime: DateTime.parse(json['dateTime'] ?? DateTime.now().toIso8601String()),
-      addresses: (json['addresses'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      photos:
+          (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      dateTime:
+          DateTime.parse(json['dateTime'] ?? DateTime.now().toIso8601String()),
+      addresses: (json['addresses'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       contactNumber: json['contactNumber'] ?? '',
       status: json['status'] ?? '',
       qrCode: json['qrCode'] ?? '',

@@ -41,7 +41,7 @@ class _DonationDriveDetailsState extends State<DonationDriveDetails> {
         donationDriveId: donationDrive.donationDriveId,
         name: name,
         description: description,
-        organizationId: donationDrive.organizationId,
+        OrganizationId: donationDrive.OrganizationId,
         photos: photos,
         donations: donationDrive.donations,
         status: status,

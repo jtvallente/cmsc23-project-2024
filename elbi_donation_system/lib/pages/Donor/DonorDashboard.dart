@@ -1,4 +1,7 @@
 import 'package:elbi_donation_system/components/FormBanner.dart';
+import 'package:elbi_donation_system/pages/Donor/DonorDonations.dart';
+import 'package:elbi_donation_system/pages/Donor/DonorOrgDetails.dart';
+import 'package:elbi_donation_system/pages/Donor/OrganizationList.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +16,13 @@ class DonorDashboard extends StatefulWidget {
 
 class _DonorDashboardState extends State<DonorDashboard> {
   Future<void>? _futureDonations;
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState() {
@@ -32,6 +42,11 @@ class _DonorDashboardState extends State<DonorDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> donorPages = [
+      DonorDonations(futureDonations: _futureDonations!),
+      DonorOrganizationList(),
+    ];
+
     return Consumer<FirebaseAuthUserProvider>(
       builder: (context, authProvider, _) {
         String userName = authProvider.currentUser?.name ?? 'User';
@@ -39,88 +54,39 @@ class _DonorDashboardState extends State<DonorDashboard> {
         print("Current User ID: $firebaseUid");
 
         return Scaffold(
-          body: FormBanner(
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.person, color: Colors.white),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: ProjectColors().greenPrimary,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.handshake),
+                label: 'Donations',
+                backgroundColor: ProjectColors().greenPrimary,
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.menu, color: Colors.white),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.groups),
+                label: 'Organizations',
+                backgroundColor: ProjectColors().greenPrimary,
               ),
             ],
-            gradient: ProjectColors().greenPrimaryGradient,
-            color: ProjectColors().greenPrimary,
-            title: userName,
-            subtitle: "Welcome,",
-            widget: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Donations made by the user',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                ),
-                ElevatedButton(
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.amber[800],
+            onTap: _onItemTapped,
+          ),
+          body: FormBanner(
+              actions: [
+                IconButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/donor_profile',
                         arguments: authProvider.currentUser);
                   },
-                  child: Text('Profile'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/donor_organization_list');
-                  },
-                  child: Text('View Organizations'),
-                ),
-                Consumer<FirebaseUserProvider>(
-                  builder: (context, userProvider, _) {
-                    return FutureBuilder<void>(
-                      future: _futureDonations,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
-                        }
-
-                        final donations = userProvider.userDonations;
-                        if (donations.isEmpty) {
-                          return Center(child: Text('No donations found'));
-                        }
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: donations.map((donation) {
-                            return ListTile(
-                              title: Text(donation.donationId),
-                              subtitle: Text('Donor ID: ${donation.donorId}'),
-                              trailing: TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/donor_donation_details',
-                                    arguments: donation,
-                                  );
-                                },
-                                child: Text('View'),
-                              ),
-                            );
-                          }).toList(),
-                        );
-                      },
-                    );
-                  },
+                  icon: const Icon(Icons.person, color: Colors.white),
                 ),
               ],
-            ),
-          ),
+              gradient: ProjectColors().greenPrimaryGradient,
+              color: ProjectColors().greenPrimary,
+              title: userName,
+              subtitle: "Welcome,",
+              widget: donorPages[_selectedIndex]),
         );
       },
     );

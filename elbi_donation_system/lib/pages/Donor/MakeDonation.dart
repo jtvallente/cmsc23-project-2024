@@ -212,8 +212,8 @@ class _MakeDonationState extends State<MakeDonation> {
   Widget build(BuildContext context) {
     final userProvider = context.watch<FirebaseUserProvider>();
     final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
-    final String organizationId = arguments['organizationId'];
-    _orgId = organizationId;
+    final String OrganizationId = arguments['OrganizationId'];
+    _orgId = OrganizationId;
 
     return Scaffold(
       body: FormBanner(
@@ -233,20 +233,22 @@ class _MakeDonationState extends State<MakeDonation> {
                   Column(
                     children: [
                       DropdownMenu(
-                        label: const Text('Category'),
-                        onSelected: (value) {
-                          setState(() {
-                            _category = value!;
-                          });
-                        },
-                        dropdownMenuEntries: const <DropdownMenuEntry<String>>[
-                          DropdownMenuEntry(value: 'Food', label: 'Food'),
-                          DropdownMenuEntry(value: 'Clothes', label: 'Clothes'),
-                          DropdownMenuEntry(value: 'Cash', label: 'Cash'),
-                          DropdownMenuEntry(value: 'Necessities', label: 'Necessities'),
-                          DropdownMenuEntry(value: 'Other', label: 'Other'),
-                        ]
-                      ),
+                          label: const Text('Category'),
+                          onSelected: (value) {
+                            setState(() {
+                              _category = value!;
+                            });
+                          },
+                          dropdownMenuEntries: const <DropdownMenuEntry<
+                              String>>[
+                            DropdownMenuEntry(value: 'Food', label: 'Food'),
+                            DropdownMenuEntry(
+                                value: 'Clothes', label: 'Clothes'),
+                            DropdownMenuEntry(value: 'Cash', label: 'Cash'),
+                            DropdownMenuEntry(
+                                value: 'Necessities', label: 'Necessities'),
+                            DropdownMenuEntry(value: 'Other', label: 'Other'),
+                          ]),
                       FormSegmentedButton(
                         label: "Delivery Method",
                         options: ["Pickup", "Drop-off"],
