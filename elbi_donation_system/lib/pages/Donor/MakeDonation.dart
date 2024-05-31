@@ -12,6 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 import 'package:elbi_donation_system/models/donation.dart';
 import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
+import 'package:intl/intl.dart';
+import 'package:elbi_donation_system/components/error_modals.dart';
+
 import 'dart:io';
 import 'package:random_string/random_string.dart';
 
@@ -26,16 +29,15 @@ class _MakeDonationState extends State<MakeDonation> {
   final TextEditingController _address2 = TextEditingController();
   final TextEditingController _contactNumber = TextEditingController();
 
-  final SwitchController _isOrganization = SwitchController();
   bool? isApproved;
-  final TextEditingController _description = TextEditingController();
-  final SwitchController _isOpenforDonations = SwitchController();
   final _formKey = GlobalKey<FormState>();
 
   DateTime? _selectedDateTime;
   String _deliveryMethod = "Pickup"; // Default to "Pickup"
   String _category = "";
   String? _orgId;
+
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -138,6 +140,20 @@ class _MakeDonationState extends State<MakeDonation> {
       final userDoc = await userProvider.getUserDocument(
           authProvider.currentUser!.userId); // Retrieve the user document
 
+      if (_selectedDateTime == null) {
+        CustomModal.showError(
+          context: context,
+          title: 'Error submitting',
+          message: 'Date and Time of pick-up or delivery cannot be empty.',
+        );
+        return;
+      }
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+
       // Get the document ID of the user
       final userId = userDoc.id;
 
@@ -164,6 +180,22 @@ class _MakeDonationState extends State<MakeDonation> {
         qrCode: "",
       );
 
+      try {
+        await userProvider.createDonation(newDonation);
+      } catch (e) {
+        CustomModal.showError(
+          context: context,
+          title: 'Submission Failed',
+          message: 'Please try again.',
+        );
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+
       // Show the success dialog
       await showDialog(
         context: context,
@@ -182,16 +214,19 @@ class _MakeDonationState extends State<MakeDonation> {
               TextButton(
                 child: Text('Close'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/donor_dashboard',
+                    (Route<dynamic> route) => false,
+                    arguments:
+                        authProvider.currentUser, // Pass the argument here
+                  );
                 },
               ),
             ],
           );
         },
       );
-
-      // Call the provider's createDonation method
-      await userProvider.createDonation(newDonation);
 
       // Print the donation data to the console
       print("Donation ID: ${newDonation.donationId}");
@@ -330,15 +365,23 @@ class _MakeDonationState extends State<MakeDonation> {
                             ),
                           ],
                         ),
-                      FormRowButton(
-                        label: "Choose date and time for pickup/drop-off",
-                        onTap: _pickDateTime,
-                        buttonLabel: "Open Calendar",
-                        icon: Icons.calendar_month,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: FormRowButton(
+                              label: "Pickup / Dropoff date",
+                              onTap: _pickDateTime,
+                              buttonLabel: "Open Calendar",
+                              icon: Icons.calendar_month,
+                            ),
+                          ),
+                        ],
                       ),
-                      if (_selectedDateTime != null)
-                        Text(
-                            "Selected DateTime: ${_selectedDateTime!.toLocal()}"),
+                      Text(
+                        _selectedDateTime != null
+                            ? "Selected Date & Time: ${DateFormat.yMMMMd().add_jm().format(_selectedDateTime!.toLocal())}"
+                            : "No date selected",
+                      ),
                       FormTextField(
                         isNum: false,
                         isPassword: false,
@@ -349,12 +392,19 @@ class _MakeDonationState extends State<MakeDonation> {
                     ],
                   ),
                   const SizedBox(height: 50),
-                  PrimaryButton(
-                    label: "Make Donation",
-                    gradient: ProjectColors().greenPrimaryGradient,
-                    onTap: _submitDonation,
-                    fillWidth: true,
-                  ),
+                  _isLoading
+                      ? PrimaryButton(
+                          label: "Submitting Donation...",
+                          gradient: ProjectColors().greenPrimaryGradient,
+                          onTap: null,
+                          fillWidth: true,
+                        )
+                      : PrimaryButton(
+                          label: "Make Donation",
+                          gradient: ProjectColors().greenPrimaryGradient,
+                          onTap: _submitDonation,
+                          fillWidth: true,
+                        )
                 ],
               ),
             ),
