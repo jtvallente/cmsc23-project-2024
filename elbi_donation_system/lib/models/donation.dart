@@ -1,7 +1,7 @@
 class Donation {
   String donationId;
   String donorId; // Foreign Key to the User who made the donation
-  String organizationId;
+  String OrganizationId;
   String category;
   String deliveryMethod;
   bool isAddedToDrive;
@@ -16,7 +16,7 @@ class Donation {
   Donation({
     required this.donationId,
     required this.donorId,
-    required this.organizationId,
+    required this.OrganizationId,
     required this.category,
     required this.deliveryMethod,
     required this.isAddedToDrive,
@@ -34,7 +34,7 @@ class Donation {
     return {
       'donationId': donationId,
       'donorId': donorId,
-      'organizationId': organizationId,
+      'organizationId': OrganizationId,
       'category': category,
       'deliveryMethod': deliveryMethod,
       'isAddedToDrive': isAddedToDrive,
@@ -53,7 +53,7 @@ class Donation {
     return Donation(
       donationId: json['donationId'] ?? '',
       donorId: json['donorId'] ?? '',
-      organizationId: json['organizationId'] ?? '',
+      OrganizationId: json['OrganizationId'] ?? '',
       category: json['category'] ?? '',
       deliveryMethod: json['deliveryMethod'] ?? '',
       isAddedToDrive: json['isAddedToDrive'] ?? false,
