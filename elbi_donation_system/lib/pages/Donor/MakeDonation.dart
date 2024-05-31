@@ -1,3 +1,4 @@
+import 'package:elbi_donation_system/components/MenuDropDown.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:elbi_donation_system/components/FormBanner.dart';
@@ -247,8 +248,8 @@ class _MakeDonationState extends State<MakeDonation> {
   Widget build(BuildContext context) {
     final userProvider = context.watch<FirebaseUserProvider>();
     final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
-    final String organizationId = arguments['organizationId'];
-    _orgId = organizationId;
+    final String OrganizationId = arguments['OrganizationId'];
+    _orgId = OrganizationId;
 
     return Scaffold(
       body: FormBanner(
@@ -271,25 +272,15 @@ class _MakeDonationState extends State<MakeDonation> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: DropdownMenu(
-                              label: const Text('Category'),
-                              onSelected: (value) {
+                            child: MenuDropDown(
+                              options: const ["Food","Clothes","Cash","Necesities", "Others" ], 
+                              label: 'Category', 
+                              onValueChanged: (value) {
                                 setState(() {
-                                  _category = value!;
+                                  _deliveryMethod = value;
                                 });
                               },
-                              dropdownMenuEntries: const <DropdownMenuEntry<
-                                  String>>[
-                                DropdownMenuEntry(value: 'Food', label: 'Food'),
-                                DropdownMenuEntry(
-                                    value: 'Clothes', label: 'Clothes'),
-                                DropdownMenuEntry(value: 'Cash', label: 'Cash'),
-                                DropdownMenuEntry(
-                                    value: 'Necessities', label: 'Necessities'),
-                                DropdownMenuEntry(
-                                    value: 'Other', label: 'Other'),
-                              ],
-                            ),
+                            ) 
                           ),
                           FormSegmentedButton(
                             label: "Delivery Method",
@@ -381,6 +372,7 @@ class _MakeDonationState extends State<MakeDonation> {
                         _selectedDateTime != null
                             ? "Selected Date & Time: ${DateFormat.yMMMMd().add_jm().format(_selectedDateTime!.toLocal())}"
                             : "No date selected",
+
                       ),
                       FormTextField(
                         isNum: false,

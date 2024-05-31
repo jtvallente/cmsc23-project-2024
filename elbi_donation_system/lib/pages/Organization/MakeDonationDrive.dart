@@ -119,7 +119,7 @@ class _MakeDonationDriveState extends State<MakeDonationDrive> {
       DonationDrive newDonationDrive = DonationDrive(
         donationDriveId: id,
         name: _name.text,
-        organizationId: _orgId!,
+        OrganizationId: _orgId!,
         description: _description.text,
         photos: userProvider.photos,
         dateTime: _selectedDateTime ?? DateTime.now(),
@@ -130,7 +130,7 @@ class _MakeDonationDriveState extends State<MakeDonationDrive> {
       print('Donation Drive Info:');
       print('ID: ${newDonationDrive.donationDriveId}');
       print('Name: ${newDonationDrive.name}');
-      print('Organization ID: ${newDonationDrive.organizationId}');
+      print('Organization ID: ${newDonationDrive.OrganizationId}');
       print('Description: ${newDonationDrive.description}');
       print('Photos: ${newDonationDrive.photos}');
       print('Date and Time: ${newDonationDrive.dateTime}');
@@ -173,8 +173,8 @@ class _MakeDonationDriveState extends State<MakeDonationDrive> {
   Widget build(BuildContext context) {
     final userProvider = context.watch<FirebaseUserProvider>();
     final User user = ModalRoute.of(context)!.settings.arguments as User;
-    final String organizationId = user.userId;
-    _orgId = organizationId;
+    final String OrganizationId = user.userId;
+    _orgId = OrganizationId;
 
     return Scaffold(
       body: FormBanner(

@@ -76,7 +76,7 @@ class DonorOrgDetails extends StatelessWidget {
                 Navigator.pushNamed(
                   context,
                   '/make_donation',
-                  arguments: {'organizationId': organization.userId},
+                  arguments: {'OrganizationId': organization.userId},
                 );
               },
               child: Text('Donate'),
