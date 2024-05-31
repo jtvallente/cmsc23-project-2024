@@ -178,10 +178,10 @@ class FirebaseUserProvider with ChangeNotifier {
   }
 
   // Fetch all donation drives for a user
-  Future<void> fetchAllDonationDrives(String organizationId) async {
+  Future<void> fetchAllDonationDrives(String OrganizationId) async {
     try {
       _userDonationDrives =
-          await firebaseService.getDonationDrivesForUser(organizationId);
+          await firebaseService.getDonationDrivesForUser(OrganizationId);
       notifyListeners();
     } catch (e) {
       print('Error fetching donation drives: $e');

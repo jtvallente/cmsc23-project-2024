@@ -93,20 +93,20 @@ class FirebaseUserAPI {
   Stream<QuerySnapshot> getDonationDrives(String uid) {
     return firestore
         .collection('donationDrive')
-        .where('organizationId', isEqualTo: uid)
+        .where('OrganizationId', isEqualTo: uid)
         .snapshots();
   }
 
   Future<List<DonationDrive>> getDonationDrivesForUser(
-      String organizationId) async {
+      String OrganizationId) async {
     try {
       QuerySnapshot querySnapshot = await firestore
           .collection('donationDrive')
-          .where('organizationId', isEqualTo: organizationId)
+          .where('OrganizationId', isEqualTo: OrganizationId)
           .get();
 
       if (querySnapshot.docs.isEmpty) {
-        print("No donation drives found for organization $organizationId");
+        print("No donation drives found for organization $OrganizationId");
         return [];
       }
 

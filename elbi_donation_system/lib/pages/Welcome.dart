@@ -19,16 +19,31 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(title: Text('Welcome')),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset('lib/assets/images/welcome/Donation.png'),
-            Image.asset('lib/assets/images/welcome/Logo.png'),
-            //Text('Welcome to Elbi Donation System!'),
-            SizedBox(height: 20),
-            CircularProgressIndicator(), // Add a loading indicator
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('lib/assets/images/welcome/Donation.png'),
+                  Image.asset('lib/assets/images/welcome/Logo.png'),
+                  SizedBox(height: 20),
+                  CircularProgressIndicator(), // Add a loading indicator
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Text(
+                'Version 1.01. All rights reserved 2024',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                ),
+              ),
+            ),
           ],
         ),
       ),
