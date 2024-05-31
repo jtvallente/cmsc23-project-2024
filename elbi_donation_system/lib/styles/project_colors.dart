@@ -25,6 +25,11 @@ class ProjectColors {
           Color.fromRGBO(209, 137, 3, 1)
         ],
       );
+  LinearGradient get redPrimaryGradient => const LinearGradient(
+        begin: Alignment(0.00, -1.00),
+        end: Alignment(0, 1),
+        colors: [Color.fromARGB(255, 255, 0, 0), Color.fromRGBO(209, 3, 3, 1)],
+      );
 
   Color get greenPrimary => const Color(0xFF288242);
   Color get purplePrimary => const Color(0xFF4F2882);

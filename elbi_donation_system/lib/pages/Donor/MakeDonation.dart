@@ -248,8 +248,8 @@ class _MakeDonationState extends State<MakeDonation> {
   Widget build(BuildContext context) {
     final userProvider = context.watch<FirebaseUserProvider>();
     final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
-    final String organizationId = arguments['organizationId'];
-    _orgId = organizationId;
+    final String OrganizationId = arguments['OrganizationId'];
+    _orgId = OrganizationId;
 
     return Scaffold(
       body: FormBanner(
@@ -372,6 +372,7 @@ class _MakeDonationState extends State<MakeDonation> {
                         _selectedDateTime != null
                             ? "Selected Date & Time: ${DateFormat.yMMMMd().add_jm().format(_selectedDateTime!.toLocal())}"
                             : "No date selected",
+
                       ),
                       FormTextField(
                         isNum: false,

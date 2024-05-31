@@ -4,7 +4,7 @@ class DonationDrive {
   String donationDriveId;
   String name;
   String description;
-  String organizationId;
+  String OrganizationId;
   List<String> photos; // Store image URLs or base64 strings
   List<Donation> donations; // List of Donation objects
   String status;
@@ -12,7 +12,7 @@ class DonationDrive {
 
   DonationDrive({
     required this.donationDriveId,
-    required this.organizationId,
+    required this.OrganizationId,
     required this.name,
     required this.description,
     required this.photos,
@@ -27,7 +27,7 @@ class DonationDrive {
       'donationDriveId': donationDriveId,
       'name': name,
       'description': description,
-      'organizationId': organizationId,
+      'OrganizationId': OrganizationId,
       'photos': photos,
       'donations': donations.map((donation) => donation.toJson()).toList(),
       'status': status,
@@ -41,7 +41,7 @@ class DonationDrive {
       donationDriveId: json['donationDriveId'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
-      organizationId: json['organizationId'] as String,
+      OrganizationId: json['OrganizationId'] as String,
       photos: List<String>.from(json['photos'] as List<dynamic>),
       donations: (json['donations'] as List<dynamic>)
           .map((item) => Donation.fromJson(item as Map<String, dynamic>))
