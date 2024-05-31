@@ -9,8 +9,8 @@ import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:elbi_donation_system/components/error_modals.dart';
 import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
-import 'package:random_string/random_string.dart';
 import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 import 'package:elbi_donation_system/components/input_checker.dart';
 
@@ -54,56 +54,6 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
     SchedulerBinding.instance.addPostFrameCallback((_) => resetValues());
   }
 
-  String? _validateName(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your name';
-    }
-    return null;
-  }
-
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter an email';
-    }
-    // Regular expression for validating an email
-    final RegExp emailRegex =
-        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Please enter a valid email';
-    }
-    return null;
-  }
-
-  String? _validateUsername(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter a username';
-    }
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.length < 8) {
-      return 'Password must be at least 8 characters long';
-    }
-    return null;
-  }
-
-  String? _validateAddress(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter an address';
-    }
-    return null;
-  }
-
-  String? _validateContactNumber(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter a contact number';
-    } else if (num.tryParse(value) == null) {
-      return 'Contact number should be a number';
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<FirebaseUserProvider>();
@@ -132,7 +82,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         label: "Name",
                         controller: _name,
                         inputType: TextInputType.name,
-                        validator: _validateName,
+                        validator: validateName,
                       ),
                       FormTextField(
                         isNum: false,
@@ -140,7 +90,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         label: "E-mail",
                         controller: _email,
                         inputType: TextInputType.emailAddress,
-                        validator: _validateEmail,
+                        validator: validateEmail,
                       ),
                       FormTextField(
                         isNum: false,
@@ -148,7 +98,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         label: "Username",
                         controller: _username,
                         inputType: TextInputType.text,
-                        validator: _validateUsername,
+                        validator: validateUsername,
                       ),
                       FormTextField(
                         isNum: false,
@@ -156,23 +106,23 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         label: "Password",
                         controller: _password,
                         inputType: TextInputType.text,
-                        validator: _validatePassword,
+                        validator: validatePassword,
                       ),
                       FormTextField(
                         isNum: false,
                         isPassword: false,
-                        label: "Address 1",
+                        label: "Address 1 (Home Address)",
                         controller: _address1,
                         inputType: TextInputType.text,
-                        validator: _validateAddress,
+                        validator: validateAddress,
                       ),
                       FormTextField(
                         isNum: false,
                         isPassword: false,
-                        label: "Address 2",
+                        label: "Address 2 (Work Address)",
                         controller: _address2,
                         inputType: TextInputType.text,
-                        validator: _validateAddress,
+                        validator: validateAddress,
                       ),
                       FormTextField(
                         isNum: true,
@@ -180,7 +130,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         label: "Contact Number",
                         controller: _contactNumber,
                         inputType: TextInputType.phone,
-                        validator: _validateContactNumber,
+                        validator: validateContactNumber,
                       ),
                       FormSwitch(
                         label: "Are you an organization?",
@@ -195,7 +145,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         FormTextField(
                           isNum: false,
                           isPassword: false,
-                          label: "Description",
+                          label: "Description / Bio",
                           controller: _description,
                           inputType: TextInputType.text,
                         ),
@@ -282,18 +232,19 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                           Navigator.pushReplacementNamed(
                               context, '/user_signin');
                         } catch (error) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text(
-                                    'Failed to sign up. Please try again later.')),
+                          CustomModal.showError(
+                            context: context,
+                            title: 'Sign-up Failed',
+                            message:
+                                'Error Signing-up. Please check your internet connection.',
                           );
-                          print('Failed to sign up: $error');
                         }
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Please correct the errors in the form')),
+                        CustomModal.showError(
+                          context: context,
+                          title: 'Sign-up Failed',
+                          message:
+                              'Please corrects the errors in the form field',
                         );
                       }
                     },

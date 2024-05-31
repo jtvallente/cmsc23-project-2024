@@ -51,6 +51,7 @@ class _DonorDashboardState extends State<DonorDashboard> {
               ),
             ],
             gradient: ProjectColors().greenPrimaryGradient,
+            isRoot: true,
             color: ProjectColors().greenPrimary,
             title: userName,
             subtitle: "Welcome,",
