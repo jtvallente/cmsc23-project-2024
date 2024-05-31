@@ -27,20 +27,27 @@ class FormTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label),
-          const SizedBox(height: 5),
-          TextFormField(
-            readOnly: readOnly!,
-            keyboardType: inputType,
-            obscureText: isPassword,
-            controller: controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+              fontFamily: 'Inter',
             ),
-            validator: validator,
-          ),
+            ),
+          const SizedBox(height: 5),
+            TextFormField(
+              readOnly: readOnly!,
+              keyboardType: inputType,
+              obscureText: isPassword,
+              controller: controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              validator: validator,
+            ),
         ],
       ),
     );

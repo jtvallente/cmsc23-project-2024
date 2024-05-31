@@ -1,3 +1,4 @@
+import 'package:elbi_donation_system/components/MenuDropDown.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:elbi_donation_system/components/FormBanner.dart';
@@ -232,20 +233,44 @@ class _MakeDonationState extends State<MakeDonation> {
                 children: [
                   Column(
                     children: [
-                      DropdownMenu(
-                        label: const Text('Category'),
-                        onSelected: (value) {
+                      /*Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Category',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                fontFamily: 'Inter',
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            DropdownMenu(
+                              onSelected: (value) {
+                                setState(() {
+                                  _category = value!;
+                                });
+                              },
+                              dropdownMenuEntries: const <DropdownMenuEntry<String>>[
+                                DropdownMenuEntry(value: 'Food', label: 'Food'),
+                                DropdownMenuEntry(value: 'Clothes', label: 'Clothes'),
+                                DropdownMenuEntry(value: 'Cash', label: 'Cash'),
+                                DropdownMenuEntry(value: 'Necessities', label: 'Necessities'),
+                                DropdownMenuEntry(value: 'Other', label: 'Other'),
+                              ]
+                            ),
+                          ]
+                        ),
+                      ),*/
+                      MenuDropDown(
+                        options: ['Food','Clothes','Necessities','Other'], 
+                        label: 'category', 
+                        onValueChanged: (value) {
                           setState(() {
-                            _category = value!;
+                            _category = value;
                           });
                         },
-                        dropdownMenuEntries: const <DropdownMenuEntry<String>>[
-                          DropdownMenuEntry(value: 'Food', label: 'Food'),
-                          DropdownMenuEntry(value: 'Clothes', label: 'Clothes'),
-                          DropdownMenuEntry(value: 'Cash', label: 'Cash'),
-                          DropdownMenuEntry(value: 'Necessities', label: 'Necessities'),
-                          DropdownMenuEntry(value: 'Other', label: 'Other'),
-                        ]
                       ),
                       FormSegmentedButton(
                         label: "Delivery Method",
@@ -320,7 +345,7 @@ class _MakeDonationState extends State<MakeDonation> {
                           ],
                         ),
                       FormRowButton(
-                        label: "Choose date and time for pickup/drop-off",
+                        label: "Date and time of pickup/drop-off",
                         onTap: _pickDateTime,
                         buttonLabel: "Open Calendar",
                         icon: Icons.calendar_month,

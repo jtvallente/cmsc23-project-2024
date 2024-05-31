@@ -19,7 +19,7 @@ class FirebaseAdminAPI {
       // Update the isApproved attribute to true
       await userRef.update({'isApproved': true});
     } catch (e) {
-      throw Exception('Failed to approve user: $e');
+      throw Exception('Failedroe user: $e');
     }
   }
 }

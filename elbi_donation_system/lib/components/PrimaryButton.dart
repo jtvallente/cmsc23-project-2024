@@ -87,6 +87,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
                     fontSize: 16,
+                    fontFamily: 'WorkSans',
                   ),
                   widget.label),
               widget.icon == null ? Container() : const SizedBox(width: 10),
