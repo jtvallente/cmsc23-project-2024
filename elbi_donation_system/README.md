@@ -6,7 +6,7 @@ Version 1.01
 - Members: James Lourence T. Vallente, Yosef Christian Cuenca, Francis Vernon Velasco
 
 ## Program Description
-This Flutter app allows users to sign up as donors or organizations accepting donations. Donors can view a list of organizations, donate items, and manage their donations. Organizations can view donations, update donation statuses, and create donation drives.
+Elbigay app allows users to sign up as donors or organizations accepting donations. Donors can view a list of organizations, donate items, and manage their donations. Organizations can view donations, update donation statuses, and create donation drives. "Elbigay" is contraction of the words Elbi (Colloquial term for Los Banos) and Bigay (which means give). This app aims to help donors, organizations, and stakeholders to organize donation in Los Banos, Laguna
 
 ## Installation Guide
 1. Clone the repository: `git clone https://github.com/your-username/your-repository.git`
