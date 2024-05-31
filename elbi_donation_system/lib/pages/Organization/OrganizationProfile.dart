@@ -1,3 +1,6 @@
+import 'package:elbi_donation_system/components/PrimaryButton.dart';
+import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
+import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_system/models/users.dart';
 import 'package:provider/provider.dart';
@@ -98,6 +101,15 @@ class _OrganizationProfileState extends State<OrganizationProfile> {
                 ),
               ),
             ],
+            PrimaryButton(
+                label: "Logout",
+                onTap: () {
+                  context.read<FirebaseAuthUserProvider>().logout();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/', (route) => false);
+                },
+                gradient: ProjectColors().redPrimaryGradient,
+                fillWidth: false)
           ],
         ),
       ),
