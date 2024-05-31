@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatefulWidget {
-  final Function() onTap;
+  final VoidCallback? onTap;
   final String label;
   final LinearGradient gradient;
   final bool fillWidth;

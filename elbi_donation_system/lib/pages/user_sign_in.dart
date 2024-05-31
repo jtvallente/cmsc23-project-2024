@@ -4,6 +4,7 @@ import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:elbi_donation_system/components/error_modals.dart';
 import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 
 class UserSignInPage extends StatefulWidget {
@@ -15,6 +16,8 @@ class _UserSignInPageState extends State<UserSignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,76 +84,101 @@ class _UserSignInPageState extends State<UserSignInPage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        PrimaryButton(
-                          label: "Sign-in",
-                          gradient: ProjectColors().greenPrimaryGradient,
-                          onTap: () async {
-                            if (_formKey.currentState?.validate() ?? false) {
-                              String email = _emailController.text;
-                              String password = _passwordController.text;
+                        _isLoading
+                            ? Center(
+                                child: PrimaryButton(
+                                  label: "Signing-in. Please wait...",
+                                  gradient:
+                                      ProjectColors().greenPrimaryGradient,
+                                  onTap: null,
+                                  fillWidth: true,
+                                ),
+                              )
+                            : PrimaryButton(
+                                label: "Sign-in",
+                                gradient: ProjectColors().greenPrimaryGradient,
+                                onTap: () async {
+                                  if (_formKey.currentState?.validate() ??
+                                      false) {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
 
-                              try {
-                                bool success = await context
-                                    .read<FirebaseAuthUserProvider>()
-                                    .login(email, password);
-                                if (success) {
-                                  var userProvider =
-                                      context.read<FirebaseAuthUserProvider>();
-                                  var user = userProvider.currentUser;
+                                    String email = _emailController.text;
+                                    String password = _passwordController.text;
 
-                                  if (user != null) {
-                                    bool isOrganization = user.isOrganization;
+                                    try {
+                                      bool success = await context
+                                          .read<FirebaseAuthUserProvider>()
+                                          .login(email, password);
+                                      if (success) {
+                                        var userProvider = context
+                                            .read<FirebaseAuthUserProvider>();
+                                        var user = userProvider.currentUser;
 
-                                    if (isOrganization) {
-                                      if (user.isApproved) {
-                                        Navigator.pushReplacementNamed(
-                                            context, '/organization_dashboard');
+                                        if (user != null) {
+                                          bool isOrganization =
+                                              user.isOrganization;
+
+                                          if (isOrganization) {
+                                            if (user.isApproved) {
+                                              Navigator.pushReplacementNamed(
+                                                  context,
+                                                  '/organization_dashboard');
+                                            } else {
+                                              CustomModal.showError(
+                                                context: context,
+                                                title: 'Sign-in Failed',
+                                                message:
+                                                    'Please wait for the Admin to approve your account creation.',
+                                              );
+                                            }
+                                          } else {
+                                            Navigator.pushReplacementNamed(
+                                                context, '/donor_dashboard');
+                                          }
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Failed to retrieve user data.'),
+                                            ),
+                                          );
+                                        }
                                       } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Please wait for the Admin to approve your account creation.'),
-                                          ),
+                                        CustomModal.showError(
+                                          context: context,
+                                          title: 'Sign-in Failed',
+                                          message:
+                                              'Please check your credentials or try Google Sign-in instead.',
                                         );
                                       }
-                                    } else {
-                                      Navigator.pushReplacementNamed(
-                                          context, '/donor_dashboard');
+                                    } catch (e) {
+                                      CustomModal.showError(
+                                        context: context,
+                                        title: 'Sign-in Failed',
+                                        message:
+                                            'Please check your credentials or try Google Sign-in instead.',
+                                      );
+                                    } finally {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
                                     }
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'Failed to retrieve user data.'),
-                                      ),
-                                    );
                                   }
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Sign-in failed. Please check your credentials or try Google Sign-in instead..'),
-                                    ),
-                                  );
-                                }
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Sign-in failed. Please check your credentials or try Google Sign-in instead.'),
-                                  ),
-                                );
-                              }
-                            }
-                          },
-                          fillWidth: true,
-                        ),
+                                },
+                                fillWidth: true,
+                              ),
                         const SizedBox(height: 10),
                         PrimaryButton(
-                          label: "Sign-in with Google",
+                          label: "Continue with Google",
                           gradient: ProjectColors().greenPrimaryGradient,
                           onTap: () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
+
                             try {
                               bool success = await context
                                   .read<FirebaseAuthUserProvider>()
@@ -168,12 +196,11 @@ class _UserSignInPageState extends State<UserSignInPage> {
                                       Navigator.pushReplacementNamed(
                                           context, '/organization_dashboard');
                                     } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'Please wait for the Admin to approve your account creation.'),
-                                        ),
+                                      CustomModal.showError(
+                                        context: context,
+                                        title: 'Sign-in Failed',
+                                        message:
+                                            'Please wait for the Admin to approve your account creation.',
                                       );
                                     }
                                   } else {
@@ -189,20 +216,24 @@ class _UserSignInPageState extends State<UserSignInPage> {
                                   );
                                 }
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Sign-in with Google failed. Please try again.'),
-                                  ),
+                                CustomModal.showError(
+                                  context: context,
+                                  title: 'Sign-in Failed',
+                                  message:
+                                      'Sign-in with Google failed. Please try again.',
                                 );
                               }
                             } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Sign-in with Google failed. Please try again.'),
-                                ),
+                              CustomModal.showError(
+                                context: context,
+                                title: 'Sign-in Failed',
+                                message:
+                                    'Sign-in with Google failed. Please try again.',
                               );
+                            } finally {
+                              setState(() {
+                                _isLoading = false;
+                              });
                             }
                           },
                           fillWidth: true,

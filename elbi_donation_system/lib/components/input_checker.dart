@@ -2,14 +2,14 @@ bool isPasswordValid(String password) {
   return password.length >= 8;
 }
 
-String? _validateName(String? value) {
+String? validateName(String? value) {
   if (value == null || value.isEmpty) {
     return 'Please enter your name';
   }
   return null;
 }
 
-String? _validateEmail(String? value) {
+String? validateEmail(String? value) {
   if (value == null || value.isEmpty) {
     return 'Please enter an email';
   }
@@ -22,28 +22,28 @@ String? _validateEmail(String? value) {
   return null;
 }
 
-String? _validateUsername(String? value) {
+String? validateUsername(String? value) {
   if (value == null || value.isEmpty) {
     return 'Please enter a username';
   }
   return null;
 }
 
-String? _validatePassword(String? value) {
+String? validatePassword(String? value) {
   if (value == null || value.length < 8) {
     return 'Password must be at least 8 characters long';
   }
   return null;
 }
 
-String? _validateAddress(String? value) {
+String? validateAddress(String? value) {
   if (value == null || value.isEmpty) {
     return 'Please enter an address';
   }
   return null;
 }
 
-String? _validateContactNumber(String? value) {
+String? validateContactNumber(String? value) {
   if (value == null || value.isEmpty) {
     return 'Please enter a contact number';
   } else if (num.tryParse(value) == null) {

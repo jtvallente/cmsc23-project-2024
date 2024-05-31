@@ -4,6 +4,8 @@ import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:elbi_donation_system/components/error_modals.dart';
+import 'package:elbi_donation_system/components/input_checker.dart';
 import 'package:elbi_donation_system/providers/FirebaseAuthAdminProvider.dart';
 
 class AdminSignInPage extends StatefulWidget {
@@ -45,7 +47,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                         FormTextField(
                           isNum: false,
                           isPassword: false,
-                          label: "Username",
+                          label: "Email or Username",
                           controller: _usernameController,
                           inputType: TextInputType.text,
                         ),
@@ -63,7 +65,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                       children: [
                         PrimaryButton(
                           label: "Sign-in",
-                          gradient: ProjectColors().greenPrimaryGradient,
+                          gradient: ProjectColors().purplePrimaryGradient,
                           onTap: () async {
                             if (_formKey.currentState?.validate() ?? false) {
                               String username = _usernameController.text;
@@ -83,19 +85,19 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                                         .currentAdmin,
                                   );
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Sign-in failed. Please check your credentials.'),
-                                    ),
+                                  CustomModal.showError(
+                                    context: context,
+                                    title: 'Sign-in Failed',
+                                    message:
+                                        'Please check your credentials or try Google Sign-in instead.',
                                   );
                                 }
                               } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Sign-in failed. Please check your credentials.'),
-                                  ),
+                                CustomModal.showError(
+                                  context: context,
+                                  title: 'Sign-in Failed',
+                                  message:
+                                      'Please check your credentials or try Google Sign-in instead.',
                                 );
                               }
                             }
@@ -104,8 +106,8 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                         ),
                         SizedBox(height: 16.0),
                         PrimaryButton(
-                          label: "Sign-in with Google",
-                          gradient: ProjectColors().bluePrimaryGradient,
+                          label: "Continue with Google",
+                          gradient: ProjectColors().purplePrimaryGradient,
                           onTap: () async {
                             try {
                               bool success = await context
@@ -114,6 +116,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
 
                               if (success) {
                                 Navigator.pushReplacementNamed(
+                                  // ignore: use_build_context_synchronously
                                   context,
                                   '/admin_dashboard',
                                   arguments: context
@@ -121,19 +124,19 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                                       .currentAdmin,
                                 );
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Google Sign-in failed. Please try again.'),
-                                  ),
+                                CustomModal.showError(
+                                  context: context,
+                                  title: 'Sign-in Failed',
+                                  message:
+                                      'Sign-in with Google failed. Please try again.',
                                 );
                               }
                             } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Google Sign-in failed. Please try again.'),
-                                ),
+                              CustomModal.showError(
+                                context: context,
+                                title: 'Sign-in Failed',
+                                message:
+                                    'Sign-in with Google failed. Please try again.',
                               );
                             }
                           },
