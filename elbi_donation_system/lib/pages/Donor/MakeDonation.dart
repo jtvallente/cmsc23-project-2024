@@ -232,29 +232,40 @@ class _MakeDonationState extends State<MakeDonation> {
                 children: [
                   Column(
                     children: [
-                      DropdownMenu(
-                        label: const Text('Category'),
-                        onSelected: (value) {
-                          setState(() {
-                            _category = value!;
-                          });
-                        },
-                        dropdownMenuEntries: const <DropdownMenuEntry<String>>[
-                          DropdownMenuEntry(value: 'Food', label: 'Food'),
-                          DropdownMenuEntry(value: 'Clothes', label: 'Clothes'),
-                          DropdownMenuEntry(value: 'Cash', label: 'Cash'),
-                          DropdownMenuEntry(value: 'Necessities', label: 'Necessities'),
-                          DropdownMenuEntry(value: 'Other', label: 'Other'),
-                        ]
-                      ),
-                      FormSegmentedButton(
-                        label: "Delivery Method",
-                        options: ["Pickup", "Drop-off"],
-                        onValueChanged: (value) {
-                          setState(() {
-                            _deliveryMethod = value;
-                          });
-                        },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: DropdownMenu(
+                              label: const Text('Category'),
+                              onSelected: (value) {
+                                setState(() {
+                                  _category = value!;
+                                });
+                              },
+                              dropdownMenuEntries: const <DropdownMenuEntry<
+                                  String>>[
+                                DropdownMenuEntry(value: 'Food', label: 'Food'),
+                                DropdownMenuEntry(
+                                    value: 'Clothes', label: 'Clothes'),
+                                DropdownMenuEntry(value: 'Cash', label: 'Cash'),
+                                DropdownMenuEntry(
+                                    value: 'Necessities', label: 'Necessities'),
+                                DropdownMenuEntry(
+                                    value: 'Other', label: 'Other'),
+                              ],
+                            ),
+                          ),
+                          FormSegmentedButton(
+                            label: "Delivery Method",
+                            options: ["Pickup", "Drop-off"],
+                            onValueChanged: (value) {
+                              setState(() {
+                                _deliveryMethod = value;
+                              });
+                            },
+                          ),
+                        ],
                       ),
                       FormTextField(
                         isNum: true,
