@@ -35,7 +35,7 @@ class Donation {
     return {
       'donationId': donationId,
       'donorId': donorId,
-      'OrganizationId': OrganizationId,
+      'organizationId': OrganizationId,
       'category': category,
       'deliveryMethod': deliveryMethod,
       'isAddedToDrive': isAddedToDrive,

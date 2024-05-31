@@ -73,6 +73,7 @@ class _FormBannerState extends State<FormBanner> {
                             fontSize: 64,
                             fontWeight: FontWeight.w900,
                             color: Colors.white,
+                            fontFamily: 'WorkSans',
                             shadows: [
                               Shadow(
                                   color: Color.fromRGBO(0, 0, 0, 0.25),
