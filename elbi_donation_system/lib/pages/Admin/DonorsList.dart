@@ -1,30 +1,34 @@
+import 'package:elbi_donation_system/components/details_modal.dart';
+import 'package:elbi_donation_system/components/section_header.dart';
+import 'package:elbi_donation_system/components/stream_list_tile.dart';
+import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_system/models/users.dart';
 
 class DonorsListPage extends StatefulWidget {
+  final Stream<QuerySnapshot> donorsStream;
+  const DonorsListPage({required this.donorsStream, super.key});
   @override
   _DonorsListPageState createState() => _DonorsListPageState();
 }
 
 class _DonorsListPageState extends State<DonorsListPage> {
+  nullFunc() {}
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> donorsStream = FirebaseFirestore.instance
-        .collection('users')
-        .where('isOrganization', isEqualTo: false)
-        .where('isApproved', isEqualTo: false)
-        .snapshots();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Donors List'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
+    return Container(
+        height: MediaQuery.of(context).size.height,
+        padding: const EdgeInsets.all(15.0),
+        child: Column(children: [
+          SectionHeader(
+              title: "All Donors",
+              icon: Icons.person,
+              color: ProjectColors().purplePrimary),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 1.5,
             child: StreamBuilder(
-              stream: donorsStream,
+              stream: widget.donorsStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -49,19 +53,33 @@ class _DonorsListPageState extends State<DonorsListPage> {
                 });
 
                 return ListView.builder(
+                  shrinkWrap: true,
                   itemCount: donors.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(donors[index].name),
-                      leading: Text(donors[index].username),
-                    );
+                    return StreamListTile(
+                        color: ProjectColors().purplePrimary,
+                        modal: DetailsModal(
+                            title: donors[index].name,
+                            description: donors[index].username,
+                            body: Column(children: [
+                              Text(donors[index].contactNo),
+                              Text(donors[index].email),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: donors[index].addresses.length,
+                                  itemBuilder: (context, i) {
+                                    return Text(donors[index].addresses[i]);
+                                  })
+                            ]),
+                            action: Container()),
+                        leading: Icon(Icons.person),
+                        title: Text(donors[index].name),
+                        trailing: Text(donors[index].username));
                   },
                 );
               },
             ),
-          ),
-        ],
-      ),
-    );
+          )
+        ]));
   }
 }
