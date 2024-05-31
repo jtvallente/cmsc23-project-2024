@@ -31,7 +31,12 @@ class _FormSegmentedButtonState extends State<FormSegmentedButton> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.label),
+          Text(
+            widget.label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              ),
+          ),
           Wrap(
             children: widget.options.map((option) {
               return Padding(

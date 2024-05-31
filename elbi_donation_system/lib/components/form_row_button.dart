@@ -24,7 +24,12 @@ class _FormRowButtonState extends State<FormRowButton> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(widget.label),
+          Text(
+            widget.label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              ),
+          ),
           ElevatedButton(
             onPressed: widget.onTap,
             child: Padding(

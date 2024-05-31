@@ -277,7 +277,7 @@ class _MakeDonationState extends State<MakeDonation> {
                               label: 'Category', 
                               onValueChanged: (value) {
                                 setState(() {
-                                  _deliveryMethod = value;
+                                  _category = value;
                                 });
                               },
                             ) 
