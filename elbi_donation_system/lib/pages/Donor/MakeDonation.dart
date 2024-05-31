@@ -322,7 +322,7 @@ class _MakeDonationState extends State<MakeDonation> {
                           ],
                         ),
                       FormRowButton(
-                        label: "Choose date and time for pickup/drop-off",
+                        label: "Choose date\nand time for\npickup or drop-off",
                         onTap: _pickDateTime,
                         buttonLabel: "Open Calendar",
                         icon: Icons.calendar_month,
