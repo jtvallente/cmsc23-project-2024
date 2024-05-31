@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_system/models/users.dart';
 import 'package:elbi_donation_system/providers/FirebaseAdminProvider.dart';
+import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
@@ -55,12 +56,25 @@ class _OrganizationsListPageState extends State<OrganizationsListPage> {
   }
 
   nullFunc() {}
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the organization stream
+    Provider.of<FirebaseUserProvider>(context, listen: false)
+        .fetchAllOrganizations();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
+    Stream<QuerySnapshot>? organizationsStream =
+        context.watch<FirebaseUserProvider>().organizationStream;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Organizations List'),
+      ),
+      body: Column(
         children: [
           SectionHeader(
               title: "All Organizations",

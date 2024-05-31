@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:elbi_donation_system/models/users.dart';
 import 'dart:convert';
 
-class AdminOrgDetails extends StatefulWidget {
-  @override
-  _AdminOrgDetailsState createState() => _AdminOrgDetailsState();
-}
-
-class _AdminOrgDetailsState extends State<AdminOrgDetails> {
+class DonorOrgDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organization = ModalRoute.of(context)!.settings.arguments as User;
@@ -76,6 +71,16 @@ class _AdminOrgDetailsState extends State<AdminOrgDetails> {
               ),
             ),
             SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/make_donation',
+                  arguments: {'organizationId': organization.userId},
+                );
+              },
+              child: Text('Donate'),
+            ),
           ],
         ),
       ),

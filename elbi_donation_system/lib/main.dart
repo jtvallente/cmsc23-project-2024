@@ -31,12 +31,15 @@ import 'pages/Organization/MakeDonationDrive.dart';
 import 'pages/Organization/OrganizationDashboard.dart';
 import 'pages/Organization/OrganizationDonationDetails.dart';
 import 'pages/Organization/OrganizationProfile.dart';
+import 'pages/Organization/QRCodeSnannerPage.dart';
 
 //USER PAGES IMPORT
 import 'pages/Donor/DonorDashboard.dart';
 import 'pages/Donor/DonorDonationDetails.dart';
 import 'pages/Donor/DonorProfile.dart';
 import 'pages/Donor/MakeDonation.dart';
+import 'pages/Donor/OrganizationList.dart';
+import 'pages/Donor/DonorOrgDetails.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -89,12 +92,15 @@ class MyApp extends StatelessWidget {
         '/organization_donation_details': (context) =>
             OrganizationDonationDetails(),
         '/organization_profile': (context) => OrganizationProfile(),
+        '/scan_qr': (context) => QRCodeScannerPage(),
 
         // Donor routes
         '/donor_dashboard': (context) => DonorDashboard(),
         '/donor_donation_details': (context) => DonorDonationDetails(),
         '/donor_profile': (context) => DonorProfile(),
         '/make_donation': (context) => MakeDonation(),
+        '/donor_organization_list': (context) => DonorOrganizationList(),
+        '/donor_org_details': (context) => DonorOrgDetails(),
       },
     );
   }

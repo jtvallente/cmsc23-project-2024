@@ -1,42 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_system/models/users.dart';
-import 'package:elbi_donation_system/models/donationdrive.dart';
-
 import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert'; // To decode the base64 image
 
-class DonationDrivesList extends StatefulWidget {
+class DonorOrganizationList extends StatefulWidget {
   @override
-  _DonationDrivesListState createState() => _DonationDrivesListState();
+  _DonorOrganizationListState createState() => _DonorOrganizationListState();
 }
 
-class _DonationDrivesListState extends State<DonationDrivesList> {
+class _DonorOrganizationListState extends State<DonorOrganizationList> {
   @override
   void initState() {
     super.initState();
-
-    // Fetch the user argument from the route and call fetchDonationDrives
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final User user = ModalRoute.of(context)!.settings.arguments as User;
-      context.read<FirebaseUserProvider>().fetchDonationDrives(user.userId);
+      Provider.of<FirebaseUserProvider>(context, listen: false)
+          .fetchAllOrganizations();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot>? donationDrivesStream =
-        context.watch<FirebaseUserProvider>().donationDrivesStream;
+    Stream<QuerySnapshot>? organizationsStream =
+        context.watch<FirebaseUserProvider>().organizationStream;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Donation Drives List'),
+        title: Text('Organizations List'),
       ),
-      body: donationDrivesStream == null
+      body: organizationsStream == null
           ? Center(child: CircularProgressIndicator())
           : StreamBuilder(
-              stream: donationDrivesStream,
+              stream: organizationsStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -49,26 +45,26 @@ class _DonationDrivesListState extends State<DonationDrivesList> {
                   );
                 } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Center(
-                    child: Text("No Donation Drives Found"),
+                    child: Text("No Orgs Found"),
                   );
                 }
 
-                List<DonationDrive> orgDrives = [];
+                List<User> organizations = [];
                 snapshot.data!.docs.forEach((doc) {
-                  DonationDrive donationDrive = DonationDrive.fromJson(
-                      doc.data() as Map<String, dynamic>);
-                  donationDrive.donationDriveId = doc.id;
-                  orgDrives.add(donationDrive);
+                  User user = User.fromJson(doc.data() as Map<String, dynamic>);
+                  user.userId = doc.id;
+                  organizations.add(user);
                 });
 
                 return ListView.builder(
-                  itemCount: orgDrives.length,
+                  itemCount: organizations.length,
                   itemBuilder: (context, index) {
                     // Extract the profile picture from the array or use a placeholder
-                    List<dynamic> photo = orgDrives[index].photos;
+                    List<dynamic> proofOfLegitimacyBase64 =
+                        organizations[index].proofOfLegitimacyBase64;
                     String profilePicture;
-                    if (photo.isNotEmpty) {
-                      profilePicture = photo[0];
+                    if (proofOfLegitimacyBase64.isNotEmpty) {
+                      profilePicture = proofOfLegitimacyBase64[0];
                     } else {
                       profilePicture = ''; // Placeholder image base64 or URL
                     }
@@ -77,12 +73,12 @@ class _DonationDrivesListState extends State<DonationDrivesList> {
                       leading: Stack(
                         children: [
                           CircleAvatar(
-                            backgroundImage: photo.isNotEmpty
+                            backgroundImage: proofOfLegitimacyBase64.isNotEmpty
                                 ? MemoryImage(base64Decode(profilePicture))
                                 : AssetImage('assets/placeholder_image.png')
                                     as ImageProvider,
                           ),
-                          if (orgDrives[index].status == "Ongoing")
+                          if (organizations[index].openForDonations)
                             Positioned(
                               bottom: 0,
                               right: 0,
@@ -94,8 +90,8 @@ class _DonationDrivesListState extends State<DonationDrivesList> {
                             ),
                         ],
                       ),
-                      title: Text(orgDrives[index].name),
-                      subtitle: Text(orgDrives[index].description),
+                      title: Text(organizations[index].name),
+                      subtitle: Text(organizations[index].username),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -103,11 +99,33 @@ class _DonationDrivesListState extends State<DonationDrivesList> {
                             onPressed: () {
                               Navigator.pushNamed(
                                 context,
-                                '/donation_drive_details',
-                                arguments: orgDrives[index],
+                                '/donor_org_details',
+                                arguments: organizations[index],
                               );
                             },
-                            child: Text('View/Update'),
+                            child: Text('View'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              if (organizations[index].openForDonations) {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/make_donation',
+                                  arguments: {
+                                    'organizationId':
+                                        organizations[index].userId,
+                                  },
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text("Org is not open for donations"),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Text('Donate'),
                           ),
                         ],
                       ),

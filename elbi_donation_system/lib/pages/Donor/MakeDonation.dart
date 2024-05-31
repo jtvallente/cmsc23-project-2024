@@ -8,7 +8,6 @@ import 'package:elbi_donation_system/components/form_row_button.dart';
 import 'package:elbi_donation_system/components/form_segmented_button.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:elbi_donation_system/permission_handler.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_system/providers/FirebaseAuthUserProvider.dart';
 import 'package:elbi_donation_system/models/donation.dart';
@@ -22,7 +21,6 @@ class MakeDonation extends StatefulWidget {
 }
 
 class _MakeDonationState extends State<MakeDonation> {
-  final TextEditingController _category = TextEditingController();
   final TextEditingController _weight = TextEditingController();
   final TextEditingController _address1 = TextEditingController();
   final TextEditingController _address2 = TextEditingController();
@@ -36,6 +34,8 @@ class _MakeDonationState extends State<MakeDonation> {
 
   DateTime? _selectedDateTime;
   String _deliveryMethod = "Pickup"; // Default to "Pickup"
+  String _category = "";
+  String? _orgId;
 
   @override
   void initState() {
@@ -148,24 +148,21 @@ class _MakeDonationState extends State<MakeDonation> {
         addresses.add(_address2.text);
       }
 
-// Now you can use the addresses list in your Donation object
       Donation newDonation = Donation(
         donationId: id,
         donorId: userId,
-        OrganizationId: '123456',
-        category: _category.text,
+        OrganizationId: _orgId!,
+        category: _category,
         deliveryMethod: _deliveryMethod,
+        isAddedToDrive: false,
         weight: double.parse(_weight.text),
         photos: userProvider.photos,
         dateTime: _selectedDateTime ?? DateTime.now(),
         addresses: _deliveryMethod == "Pickup" ? addresses : [],
         contactNumber: _contactNumber.text,
         status: "Pending",
-        qrCode: null,
+        qrCode: "",
       );
-
-      // Generate QR code data after creating the donation
-      newDonation.qrCode = generateQRCodeData(newDonation.donationId);
 
       // Show the success dialog
       await showDialog(
@@ -214,6 +211,9 @@ class _MakeDonationState extends State<MakeDonation> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<FirebaseUserProvider>();
+    final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    final String organizationId = arguments['organizationId'];
+    _orgId = organizationId;
 
     return Scaffold(
       body: FormBanner(
@@ -232,12 +232,20 @@ class _MakeDonationState extends State<MakeDonation> {
                 children: [
                   Column(
                     children: [
-                      FormTextField(
-                        isNum: false,
-                        isPassword: false,
-                        label: "Category",
-                        controller: _category,
-                        inputType: TextInputType.name,
+                      DropdownMenu(
+                        label: const Text('Category'),
+                        onSelected: (value) {
+                          setState(() {
+                            _category = value!;
+                          });
+                        },
+                        dropdownMenuEntries: const <DropdownMenuEntry<String>>[
+                          DropdownMenuEntry(value: 'Food', label: 'Food'),
+                          DropdownMenuEntry(value: 'Clothes', label: 'Clothes'),
+                          DropdownMenuEntry(value: 'Cash', label: 'Cash'),
+                          DropdownMenuEntry(value: 'Necessities', label: 'Necessities'),
+                          DropdownMenuEntry(value: 'Other', label: 'Other'),
+                        ]
                       ),
                       FormSegmentedButton(
                         label: "Delivery Method",
