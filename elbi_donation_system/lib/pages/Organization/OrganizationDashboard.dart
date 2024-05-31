@@ -49,6 +49,7 @@ class _OrganizationDashboardState extends State<OrganizationDashboard> {
                 icon: const Icon(Icons.menu, color: Colors.white),
               ),
             ],
+            isRoot: true,
             gradient: ProjectColors().greenPrimaryGradient,
             color: ProjectColors().greenPrimary,
             title: userName,

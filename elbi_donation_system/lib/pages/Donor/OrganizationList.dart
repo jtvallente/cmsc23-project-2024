@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_system/models/users.dart';
 import 'package:elbi_donation_system/providers/FirebaseUserProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:elbi_donation_system/components/error_modals.dart';
 import 'dart:convert'; // To decode the base64 image
 
 class DonorOrganizationList extends StatefulWidget {
@@ -117,11 +118,11 @@ class _DonorOrganizationListState extends State<DonorOrganizationList> {
                                   },
                                 );
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text("Org is not open for donations"),
-                                  ),
+                                CustomModal.showError(
+                                  context: context,
+                                  title: 'Cannot Donate',
+                                  message:
+                                      '${organizations[index].name} is not open for donation',
                                 );
                               }
                             },
