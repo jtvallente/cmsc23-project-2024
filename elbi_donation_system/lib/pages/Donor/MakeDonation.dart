@@ -277,14 +277,14 @@ class _MakeDonationState extends State<MakeDonation> {
                               label: 'Category', 
                               onValueChanged: (value) {
                                 setState(() {
-                                  _deliveryMethod = value;
+                                  _category = value;
                                 });
                               },
                             ) 
                           ),
                           FormSegmentedButton(
                             label: "Delivery Method",
-                            options: ["Pickup", "Drop-off"],
+                            options: const ["Pickup", "Drop-off"],
                             onValueChanged: (value) {
                               setState(() {
                                 _deliveryMethod = value;

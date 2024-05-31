@@ -27,7 +27,12 @@ class FormTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label),
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              ),
+          ),
           const SizedBox(height: 5),
           TextFormField(
             readOnly: readOnly!,
