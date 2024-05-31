@@ -1,3 +1,4 @@
+import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/components/section_header.dart';
 import 'package:elbi_donation_system/styles/project_colors.dart';
 import 'package:flutter/material.dart';
@@ -104,8 +105,14 @@ class _DonorOrganizationListState extends State<DonorOrganizationList> {
                                   ),
                               ],
                             ),
-                            title: Text(organizations[index].name),
-                            subtitle: Text(organizations[index].username),
+                            title: Text(
+                              organizations[index].name,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            subtitle: Text(
+                              organizations[index].username,
+                              style: TextStyle(fontSize: 12),
+                            ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -119,7 +126,7 @@ class _DonorOrganizationListState extends State<DonorOrganizationList> {
                                   },
                                   child: Text('View'),
                                 ),
-                                TextButton(
+                                ElevatedButton(
                                   onPressed: () {
                                     if (organizations[index].openForDonations) {
                                       Navigator.pushNamed(
