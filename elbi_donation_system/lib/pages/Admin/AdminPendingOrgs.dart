@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_system/components/PrimaryButton.dart';
 import 'package:elbi_donation_system/components/details_modal.dart';
+import 'package:elbi_donation_system/components/section_header.dart';
 import 'package:elbi_donation_system/components/stream_list_tile.dart';
 import 'package:elbi_donation_system/models/users.dart';
 import 'package:elbi_donation_system/providers/FirebaseAdminProvider.dart';
@@ -36,7 +37,6 @@ class _AdminPendingOrgsPageState extends State<AdminPendingOrgsPage> {
         return '.webp';
       case 'JVBERi0':
         return '.pdf';
-      // Add more prefixes for other file types if needed
       default:
         return 'unknown';
     }
@@ -90,68 +90,67 @@ class _AdminPendingOrgsPageState extends State<AdminPendingOrgsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Organizations\nPending Approval",
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.w600),
-                      ),
-                      Icon(
-                        Icons.pending_actions,
-                        size: 50,
+                SectionHeader(
+                    title: "Organizations\nPending Approval",
+                    icon: Icons.pending_actions_rounded,
+                    color: ProjectColors().purplePrimary),
+                organizations.length == 0
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: organizations.length,
+                          itemBuilder: (context, index) {
+                            return StreamListTile(
+                                color: ProjectColors().yellowPrimary,
+                                modal: DetailsModal(
+                                    title: organizations[index].name,
+                                    description:
+                                        organizations[index].description,
+                                    body: organizations[index]
+                                            .proofOfLegitimacyBase64
+                                            .isNotEmpty
+                                        ? SingleChildScrollView(
+                                            child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: organizations[index]
+                                                .proofOfLegitimacyBase64
+                                                .length,
+                                            itemBuilder: (context, i) {
+                                              return Card(
+                                                child: ListTile(
+                                                    leading:
+                                                        Icon(Icons.file_copy),
+                                                    title: Text(
+                                                        "Proof of Legitimacy ${index + 1}"),
+                                                    onTap: () =>
+                                                        openFileFromBase64String(
+                                                            organizations[index]
+                                                                    .proofOfLegitimacyBase64[
+                                                                i])),
+                                              );
+                                            },
+                                          ))
+                                        : Text(
+                                            "No proof of legitimacy uploaded"),
+                                    action: PrimaryButton(
+                                        label: "Approve",
+                                        onTap: () => context
+                                            .read<FirebaseAdminProvider>()
+                                            .approveUser(
+                                                organizations[index].userId),
+                                        gradient: ProjectColors()
+                                            .greenPrimaryGradient,
+                                        fillWidth: true)),
+                                leading: Icon(Icons.groups_2_sharp),
+                                title: Text(organizations[index].name),
+                                trailing: Text(organizations[index].isApproved
+                                    ? "Approved"
+                                    : "For Review"));
+                          },
+                        ),
                       )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: organizations.length,
-                    itemBuilder: (context, index) {
-                      return StreamListTile(
-                          color: ProjectColors().yellowPrimary,
-                          modal: DetailsModal(
-                              withAction: true,
-                              title: organizations[index].name,
-                              description: organizations[index].description,
-                              body: organizations[index]
-                                      .proofOfLegitimacyBase64
-                                      .isNotEmpty
-                                  ? SingleChildScrollView(
-                                      child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: organizations.length,
-                                      itemBuilder: (context, i) {
-                                        return Card(
-                                          child: ListTile(
-                                              leading: Icon(Icons.file_copy),
-                                              title: Text(
-                                                  "Proof of Legitimacy ${index + 1}"),
-                                              onTap: () => openFileFromBase64String(
-                                                  organizations[index]
-                                                          .proofOfLegitimacyBase64[
-                                                      i])),
-                                        );
-                                      },
-                                    ))
-                                  : Text("No proof of legitimacy uploaded"),
-                              action: () => context
-                                  .read<FirebaseAdminProvider>()
-                                  .approveUser(organizations[index].userId),
-                              actionLabel: "Approve"),
-                          leading: Text(organizations[index].isApproved
-                              ? "approved"
-                              : "For Review"),
-                          title: Text(organizations[index].name),
-                          trailing: Icon(Icons.groups_2_sharp));
-                    },
-                  ),
-                ),
+                    : Text("There are no pending organizations left"),
               ],
             ),
           ),

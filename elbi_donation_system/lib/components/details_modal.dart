@@ -6,15 +6,12 @@ class DetailsModal extends StatelessWidget {
   final String title;
   final String description;
   final Widget body;
-  final bool withAction;
-  final String actionLabel;
-  final Function action;
+  final Widget action;
+
   const DetailsModal(
       {super.key,
       required this.title,
       required this.body,
-      this.withAction = false,
-      required this.actionLabel,
       required this.action,
       required this.description});
 
@@ -29,15 +26,8 @@ class DetailsModal extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  children: [Text(title), Text(description), body],
+                  children: [Text(title), Text(description), body, action],
                 ),
-                withAction
-                    ? PrimaryButton(
-                        label: actionLabel,
-                        onTap: () => action,
-                        gradient: ProjectColors().greenPrimaryGradient,
-                        fillWidth: true)
-                    : Container()
               ],
             )),
       ),
