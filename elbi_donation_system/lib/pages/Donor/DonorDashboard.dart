@@ -69,7 +69,7 @@ class _DonorDashboardState extends State<DonorDashboard> {
               ),
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor: Colors.amber[800],
+            selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
             onTap: _onItemTapped,
           ),
           body: FormBanner(
@@ -82,6 +82,7 @@ class _DonorDashboardState extends State<DonorDashboard> {
                   icon: const Icon(Icons.person, color: Colors.white),
                 ),
               ],
+              isRoot: true,
               gradient: ProjectColors().greenPrimaryGradient,
               color: ProjectColors().greenPrimary,
               title: userName,

@@ -1,16 +1,45 @@
-# elbi_donation_system
+# Elbigay
+Version 1.01
 
-A new Flutter project.
+## Group Details
+- CMSC 23-U4L
+- Members: James Lourence T. Vallente, Yosef Christian Cuenca, Francis Vernon Velasco
 
-## Getting Started
+## Program Description
+This Flutter app allows users to sign up as donors or organizations accepting donations. Donors can view a list of organizations, donate items, and manage their donations. Organizations can view donations, update donation statuses, and create donation drives.
 
-This project is a starting point for a Flutter application.
+## Installation Guide
+1. Clone the repository: `git clone https://github.com/your-username/your-repository.git`
+2. Navigate to the project directory: `cd cmsc-project-2024/elbi_donation_system`
+3. Install dependencies: `flutter pub get`
+4. Build the app for Android installation using `flutter build apk`
 
-A few resources to get you started if this is your first Flutter project:
+## Contributing
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature-branch`
+3. Make your changes
+4. Commit your changes: `git commit -am 'Add new feature'`
+5. Push to the branch: `git push origin feature-branch`
+6. Submit a pull request
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How to Use the App
+1. Sign In/Sign Up
+   - Use the provided authentication system to sign in or sign up.
+2. Donor's View
+   - Homepage: View a list of organizations and donate items.
+   - Donate: Enter donation information, including category, pickup/drop-off details, and photo.
+   - Profile: View and manage donation history and personal information.
+3. Organization's View
+   - Homepage: View donations and donation drives.
+   - Donation: Update donation status and view donor information.
+   - Donation Drives: Create, update, and delete donation drives.
+   - Profile: View and update organization information.
+4. Admin's View
+   - Sign In: Use Google sign-in for authentication.
+   - View All: View all organizations and donations, approve organization sign-ups, and view all donors.
+
+## Limitations
+- The app does not handle the physical logistics of donation delivery and acceptance.
+
+
